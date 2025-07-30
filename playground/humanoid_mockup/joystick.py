@@ -91,9 +91,9 @@ def default_config() -> config_dict.ConfigDict:
             interval_range=[5.0, 10.0],
             magnitude_range=[0.1, 1.0],
         ),
-        lin_vel_x=[-0.15, 0.15],
-        lin_vel_y=[-0.2, 0.2],
-        ang_vel_yaw=[-1.0, 1.0],  # [-1.0, 1.0]
+        lin_vel_x=[-0.3, 0.4],
+        lin_vel_y=[-0.3, 0.3],
+        ang_vel_yaw=[-1.5, 1.5],  # [-1.0, 1.0]
         neck_pitch_range=[-0.34, 1.1],
         head_pitch_range=[-0.78, 0.78],
         head_yaw_range=[-1.5, 1.5],
