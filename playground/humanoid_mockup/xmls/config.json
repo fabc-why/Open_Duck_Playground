@@ -1,0 +1,18 @@
+{
+  "url": "https://cad.onshape.com/documents/a9a7e86a17f28ee4ee62053e/w/e5c2325ac4afc9cec5a29721/e/8ca5f896267b7130065f5bbb",
+  "outputFormat": "mujoco",
+  "robot_name": "humanoid_mockup_v0.1",
+  "output_filename": "humanoid_mockup_v0.1",
+  "simplify_stls": true,
+  "max_stl_size": 0.3,
+  "ignore": {
+    "*": "collision",
+    "!*_foot": "collision"
+  },
+  "additional_xml": ["steadywin_GIM6010-8.xml", "sensors.xml"],
+  "joint_properties": {
+    "default": {
+      "class": "steadywin_GIM6010_8"
+    }
+  }
+}

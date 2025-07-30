@@ -1,0 +1,13 @@
+{
+    "configuration": "default",
+    "documentId": "a9a7e86a17f28ee4ee62053e",
+    "documentMicroversion": "8f4b0360f6d7173a0486e26b",
+    "elementId": "75acb59626c2f1ffac01e6be",
+    "fullConfiguration": "default",
+    "id": "M/nn3wmGZbp52Ungz",
+    "isStandardContent": false,
+    "name": "left_knee_to_ankle_pitch <1>",
+    "partId": "RXBD",
+    "suppressed": false,
+    "type": "Part"
+}
