@@ -78,14 +78,20 @@ class MjInfer(MJInferBase):
 
         contacts = self.get_feet_contacts(data)
 
+    
+        # AFTER
+        gravity = np.array(data.site_xmat[self.get_site_id_from_name("imu")]).reshape(
+            (3, 3)
+        ).T @ np.array([0, 0, -1])
+
         # if not self.standing:
         # ref = self.PRM.get_reference_motion(*command[:3], self.imitation_i)
 
         obs = np.concatenate(
             [
                 gyro,
+                gravity,
                 accelerometer,
-                # gravity,
                 command,
                 joint_angles - self.default_actuator,
                 joint_vel * self.dof_vel_scale,

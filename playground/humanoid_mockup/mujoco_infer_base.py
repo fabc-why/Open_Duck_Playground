@@ -251,6 +251,10 @@ class MJInferBase:
     # def get_gravity(self, data):
     #     return data.site_xmat[self.imu_site_id].reshape((3, 3)).T @ np.array([0, 0, -1])
 
+    def get_site_id_from_name(self, name: str) -> int:
+        """Return the id of a specified site"""
+        return mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, name)
+
     def get_gravity(self, data):
         return data.sensordata[
             self.gravity_id : self.gravity_id + self.gravity_dimensions
@@ -278,6 +282,6 @@ class MJInferBase:
         return False
 
     def get_feet_contacts(self, data):
-        left_contact = self.check_contact(data, "left_foot_contact", "floor")
-        right_contact = self.check_contact(data, "right_foot_contact", "floor")
+        left_contact = self.check_contact(data, "left_foot_2", "floor")
+        right_contact = self.check_contact(data, "right_foot_2", "floor")
         return left_contact, right_contact

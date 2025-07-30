@@ -499,7 +499,7 @@ class Joystick(humanoid_mockup_base.HumanoidMockupEnv):
 
         accelerometer = self.get_accelerometer(data)
         # accelerometer[0] += 1.3 # TODO testing
-        accelerometer.at[0].set(accelerometer[0] + 1.3)
+        # accelerometer.at[0].set(accelerometer[0] + 1.3)
 
         info["rng"], noise_rng = jax.random.split(info["rng"])
         noisy_accelerometer = (
@@ -570,10 +570,10 @@ class Joystick(humanoid_mockup_base.HumanoidMockupEnv):
         state = jp.hstack(
             [
                 # noisy_linvel,  # 3
-                # noisy_gyro,  # 3
-                # noisy_gravity,  # 3
                 noisy_gyro,  # 3
-                noisy_accelerometer,  # 3
+                noisy_gravity,  # 3
+                # noisy_gyro,  # 3
+                # noisy_accelerometer,  # 3
                 info["command"],  # 3
                 noisy_joint_angles - self._default_actuator,  # 10
                 noisy_joint_vel * self._config.dof_vel_scale,  # 10
