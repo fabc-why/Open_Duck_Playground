@@ -90,7 +90,7 @@ class MjInfer(MJInferBase):
             [
                 gyro,
                 gravity,
-                accelerometer,
+                # accelerometer,
                 command,
                 joint_angles - self.default_actuator,
                 joint_vel * self.dof_vel_scale,

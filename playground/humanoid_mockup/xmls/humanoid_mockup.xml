@@ -46,30 +46,30 @@
     <!-- Link trunk_2 -->
     <body name="trunk_2" pos="0 0 0.55" quat="1 0 0 0" childclass="humanoid_mockup_v0.1">
       <freejoint name="trunk_2_freejoint"/>
-      <inertial pos="0.187302 -0.0485955 0.0364186" mass="5.776" fullinertia="0.0497042 0.0436902 0.0147819 -1.15556e-33 2.40494e-18 -4.33681e-19"/>
+      <inertial pos="0.120022 0.0611056 0.0576308" mass="5.776" fullinertia="0.0497042 0.0436902 0.0147819 5.50334e-11 -1.13903e-18 -4.30554e-10"/>
       <!-- Part gim6010_8 -->
-      <geom type="mesh" class="visual" pos="0.187302 -0.0185955 -0.0752399" quat="0.707107 -0.707107 0 0" mesh="gim6010_8" material="gim6010_8_material"/>
+      <geom type="mesh" class="visual" pos="0.120022 0.0911056 -0.0540277" quat="0.707107 -0.707107 -3.23536e-09 3.23536e-09" mesh="gim6010_8" material="gim6010_8_material"/>
       <!-- Part trunk_2 -->
-      <geom type="mesh" class="visual" pos="0.187302 -0.0485955 -0.0752399" quat="1 0 0 0" mesh="trunk" material="trunk_material"/>
+      <geom type="mesh" class="visual" pos="0.120022 0.0611056 -0.0540277" quat="1 -7.44689e-09 -0 4.57549e-09" mesh="trunk" material="trunk_material"/>
       <!-- Part gim6010_8_2 -->
-      <geom type="mesh" class="visual" pos="0.187302 -0.118596 -0.0752399" quat="0.707107 -0.707107 0 0" mesh="gim6010_8" material="gim6010_8_material"/>
+      <geom type="mesh" class="visual" pos="0.120022 -0.00889443 -0.0540277" quat="0.707107 -0.707107 -3.23536e-09 3.23536e-09" mesh="gim6010_8" material="gim6010_8_material"/>
       <!-- Frame trunk -->
-      <site group="3" name="trunk" pos="0.187302 -0.0485955 0.0247601" quat="1 0 0 0"/>
+      <site group="3" name="trunk" pos="0.120022 0.0611056 0.0459723" quat="1 -7.44689e-09 -0 4.57549e-09"/>
       <!-- Frame imu -->
-      <site group="3" name="imu" pos="0.187302 -0.0485955 0.17476" quat="1 0 0 0"/>
+      <site group="3" name="imu" pos="0.120022 0.0611056 0.195972" quat="1 -7.44689e-09 -0 4.57549e-09"/>
       <!-- Link left_hip_pitch_to_roll -->
-      <body name="left_hip_pitch_to_roll" pos="0.187302 0.0214045 -0.0752399" quat="0.707107 -0.707107 0 0">
+      <body name="left_hip_pitch_to_roll" pos="0.120022 0.131106 -0.0540277" quat="0.707107 -0.707107 5.37049e-09 1.18412e-08">
         <!-- Joint from trunk_2 to left_hip_pitch_to_roll -->
-        <joint axis="0 0 1" name="left_hip_pitch" type="hinge" class="steadywin_GIM6010_8"/>
+        <joint axis="0 0 1" name="left_hip_pitch" type="hinge" range="-1.5707963511359102 1.570796302453883" class="steadywin_GIM6010_8"/>
         <inertial pos="-0.00539992 -2.00931e-10 0.046622" mass="0.517883" fullinertia="0.000465444 0.000403205 0.000324921 -3.16452e-12 1.58161e-06 1.79213e-12"/>
         <!-- Part left_hip_pitch_to_roll -->
-        <geom type="mesh" class="visual" pos="0 0 -0.07" quat="0.707107 0.707107 -0 -0" mesh="left_hip_pitch_to_roll" material="left_hip_pitch_to_roll_material"/>
+        <geom type="mesh" class="visual" pos="0 6.93889e-18 -0.07" quat="0.707107 0.707107 0 -3.63926e-25" mesh="left_hip_pitch_to_roll" material="left_hip_pitch_to_roll_material"/>
         <!-- Part gim6010_8_3 -->
         <geom type="mesh" class="visual" pos="0.02 0 0.05" quat="0.5 0.5 -0.5 -0.5" mesh="gim6010_8" material="gim6010_8_material"/>
         <!-- Link left_hip_roll_to_yaw -->
-        <body name="left_hip_roll_to_yaw" pos="0.02 0 0.05" quat="0 -0.707107 0 -0.707107">
+        <body name="left_hip_roll_to_yaw" pos="0.02 6.93889e-18 0.05" quat="1.44385e-16 -0.707107 1.11022e-16 -0.707107">
           <!-- Joint from left_hip_pitch_to_roll to left_hip_roll_to_yaw -->
-          <joint axis="0 0 1" name="left_hip_roll" type="hinge" class="steadywin_GIM6010_8"/>
+          <joint axis="0 0 1" name="left_hip_roll" type="hinge" range="-0.3490658503988659 1.5707963267948966" class="steadywin_GIM6010_8"/>
           <inertial pos="2.00931e-10 -0.0558222 -0.0146001" mass="0.517883" fullinertia="0.000696527 0.000428388 0.0006553 -7.24941e-12 -3.16452e-12 -0.000148243"/>
           <!-- Part left_hip_roll_to_yaw -->
           <geom type="mesh" class="visual" pos="-0.12 0 -0.02" quat="0.5 -0.5 -0.5 -0.5" mesh="left_hip_roll_to_yaw" material="left_hip_roll_to_yaw_material"/>
@@ -78,82 +78,82 @@
           <!-- Link left_hip_yaw_to_knee -->
           <body name="left_hip_yaw_to_knee" pos="2.77556e-17 -0.09 -0.02" quat="0.5 0.5 -0.5 0.5">
             <!-- Joint from left_hip_roll_to_yaw to left_hip_yaw_to_knee -->
-            <joint axis="0 0 1" name="left_hip_yaw" type="hinge" class="steadywin_GIM6010_8"/>
+            <joint axis="0 0 1" name="left_hip_yaw" type="hinge" range="-1.570796331370385 1.5707963222194081" class="steadywin_GIM6010_8"/>
             <inertial pos="6.01852e-10 -0.00240575 0.0825501" mass="0.688" fullinertia="0.00139735 0.00147146 0.000460223 1.06662e-11 -1.67017e-11 4.0779e-05"/>
             <!-- Part left_hip_yaw_to_knee -->
-            <geom type="mesh" class="visual" pos="0 0.12 -0.09" quat="0 1 0 0" mesh="left_hip_yaw_to_knee" material="left_hip_yaw_to_knee_material"/>
+            <geom type="mesh" class="visual" pos="1.38778e-17 0.12 -0.09" quat="0 1 0 0" mesh="left_hip_yaw_to_knee" material="left_hip_yaw_to_knee_material"/>
             <!-- Part gim6010_8_5 -->
-            <geom type="mesh" class="visual" pos="0 0.02 0.11" quat="0.707107 0.707107 -0 -0" mesh="gim6010_8" material="gim6010_8_material"/>
+            <geom type="mesh" class="visual" pos="1.38778e-17 0.02 0.11" quat="0.707107 0.707107 -0 -1.48992e-17" mesh="gim6010_8" material="gim6010_8_material"/>
             <!-- Link left_knee_to_ankle_pitch -->
-            <body name="left_knee_to_ankle_pitch" pos="0 0.02 0.11" quat="0.707107 -0.707107 0 0">
+            <body name="left_knee_to_ankle_pitch" pos="1.38778e-17 0.02 0.11" quat="0.707107 -0.707107 -1.92504e-10 -1.92504e-10">
               <!-- Joint from left_hip_yaw_to_knee to left_knee_to_ankle_pitch -->
-              <joint axis="0 0 1" name="left_knee" type="hinge" class="steadywin_GIM6010_8"/>
+              <joint axis="0 0 1" name="left_knee" type="hinge" range="-2.268928027048144 5.444842610619447e-10" class="steadywin_GIM6010_8"/>
               <inertial pos="-4.82013e-08 -0.149239 -0.0200003" mass="0.788" fullinertia="0.00357604 0.000553221 0.00362879 1.87021e-09 2.32028e-09 -0.000244816"/>
               <!-- Part left_knee_to_ankle_pitch -->
-              <geom type="mesh" class="visual" pos="0 0.2 0.1" quat="0.707107 -0.707107 0 0" mesh="left_knee_to_ankle_pitch" material="left_knee_to_ankle_pitch_material"/>
+              <geom type="mesh" class="visual" pos="-1.38778e-17 0.2 0.1" quat="0.707107 -0.707107 -0 7.25026e-25" mesh="left_knee_to_ankle_pitch" material="left_knee_to_ankle_pitch_material"/>
               <!-- Part gim6010_8_6 -->
-              <geom type="mesh" class="visual" pos="0 -0.2 -9.71445e-17" quat="0 1 0 0" mesh="gim6010_8" material="gim6010_8_material"/>
+              <geom type="mesh" class="visual" pos="-2.77556e-17 -0.2 0" quat="0 1 0 0" mesh="gim6010_8" material="gim6010_8_material"/>
               <!-- Link left_foot_2 -->
-              <body name="left_foot_2" pos="0 -0.2 -9.71445e-17" quat="1 0 2.22045e-16 0">
+              <body name="left_foot_2" pos="-2.77556e-17 -0.2 -2.77556e-17" quat="1 -0 -1.11022e-16 9.71445e-17">
                 <!-- Joint from left_knee_to_ankle_pitch to left_foot_2 -->
-                <joint axis="0 0 1" name="left_ankle_pitch" type="hinge" class="steadywin_GIM6010_8"/>
-                <inertial pos="0.0194455 -0.0403674 -0.00944551" mass="0.2" fullinertia="0.000264539 0.000619609 0.000659084 6.66303e-05 4.10475e-05 -6.66303e-05"/>
+                <joint axis="0 0 1" name="left_ankle_pitch" type="hinge" range="-1.5707963267948966 1.5707963267948966" class="steadywin_GIM6010_8"/>
+                <inertial pos="0.0131475 -0.0384421 -0.008966" mass="0.2" fullinertia="0.000257266 0.000409095 0.000597862 7.57854e-05 2.9014e-05 -7.14802e-05"/>
                 <!-- Part left_foot_2 -->
-                <geom type="mesh" class="visual" pos="0 0.4 0.1" quat="0.707107 -0.707107 0 0" mesh="left_foot" material="left_foot_material"/>
-                <geom type="mesh" class="collision" pos="0 0.4 0.1" quat="0.707107 -0.707107 0 0" mesh="left_foot" material="left_foot_material" name="left_foot_contact"/>
+                <geom type="mesh" class="visual" pos="-1.38778e-17 0.4 0.1" quat="0.707107 -0.707107 -0 -3.70145e-26" mesh="left_foot" material="left_foot_material"/>
+                <geom type="mesh" class="collision" pos="-1.38778e-17 0.4 0.1" quat="0.707107 -0.707107 -0 -3.70145e-26" mesh="left_foot" material="left_foot_material" name="left_foot_contact"/>
                 <!-- Frame left_foot -->
-                <site group="3" name="left_foot" pos="0.03 -0.065 -0.02" quat="0.707107 -0.707107 0 0"/>
+                <site group="3" name="left_foot" pos="0.03 -0.075 -0.02" quat="0.707107 -0.707107 -0 -3.70145e-26"/>
               </body>
             </body>
           </body>
         </body>
       </body>
       <!-- Link right_hip_pitch_to_roll -->
-      <body name="right_hip_pitch_to_roll" pos="0.187302 -0.118596 -0.0752399" quat="0.707107 -0.707107 0 0">
+      <body name="right_hip_pitch_to_roll" pos="0.120022 -0.00889443 -0.0540277" quat="0.707107 -0.707107 -3.23536e-09 3.23536e-09">
         <!-- Joint from trunk_2 to right_hip_pitch_to_roll -->
-        <joint axis="0 0 1" name="right_hip_pitch" type="hinge" class="steadywin_GIM6010_8"/>
+        <joint axis="0 0 1" name="right_hip_pitch" type="hinge" range="-1.5707963267948966 1.5707963267948966" class="steadywin_GIM6010_8"/>
         <inertial pos="-0.00539992 2.00931e-10 -0.046622" mass="0.517883" fullinertia="0.000465444 0.000403205 0.000324921 3.16452e-12 -1.58161e-06 1.79213e-12"/>
         <!-- Part gim6010_8_7 -->
-        <geom type="mesh" class="visual" pos="-0.02 0 -0.05" quat="0.707107 0 0.707107 0" mesh="gim6010_8" material="gim6010_8_material"/>
+        <geom type="mesh" class="visual" pos="-0.02 0 -0.05" quat="0.707107 -0 0.707107 -3.33067e-16" mesh="gim6010_8" material="gim6010_8_material"/>
         <!-- Part right_hip_pitch_to_roll -->
-        <geom type="mesh" class="visual" pos="0 0 0.07" quat="0.707107 0.707107 -0 -0" mesh="right_hip_pitch_to_roll" material="right_hip_pitch_to_roll_material"/>
+        <geom type="mesh" class="visual" pos="-2.77556e-17 0 0.07" quat="0.707107 0.707107 -0 -2.88869e-25" mesh="right_hip_pitch_to_roll" material="right_hip_pitch_to_roll_material"/>
         <!-- Link right_hip_roll_to_yaw -->
-        <body name="right_hip_roll_to_yaw" pos="0.02 0 -0.05" quat="0.707107 -0 -0.707107 -0">
+        <body name="right_hip_roll_to_yaw" pos="0.02 -6.93889e-18 -0.05" quat="0.707107 5.26575e-09 -0.707107 -5.26575e-09">
           <!-- Joint from right_hip_pitch_to_roll to right_hip_roll_to_yaw -->
-          <joint axis="0 0 1" name="right_hip_roll" type="hinge" class="steadywin_GIM6010_8"/>
+          <joint axis="0 0 1" name="right_hip_roll" type="hinge" range="-0.3490658355050899 1.5707963416886725" class="steadywin_GIM6010_8"/>
           <inertial pos="2.00931e-10 0.0558222 0.0146001" mass="0.517883" fullinertia="0.000696527 0.000428388 0.0006553 7.24941e-12 3.16452e-12 -0.000148243"/>
           <!-- Part right_hip_roll_to_yaw -->
           <geom type="mesh" class="visual" pos="0.12 0 0.02" quat="0.5 0.5 0.5 -0.5" mesh="right_hip_roll_to_yaw" material="right_hip_roll_to_yaw_material"/>
           <!-- Part gim6010_8_8 -->
-          <geom type="mesh" class="visual" pos="-2.77556e-17 0.05 0.02" quat="0.5 -0.5 0.5 0.5" mesh="gim6010_8" material="gim6010_8_material"/>
+          <geom type="mesh" class="visual" pos="-2.08167e-17 0.05 0.02" quat="0.5 -0.5 0.5 0.5" mesh="gim6010_8" material="gim6010_8_material"/>
           <!-- Link right_hip_yaw_to_knee -->
-          <body name="right_hip_yaw_to_knee" pos="-2.77556e-17 0.09 0.02" quat="0.5 0.5 0.5 -0.5">
+          <body name="right_hip_yaw_to_knee" pos="-2.08167e-17 0.09 0.02" quat="0.5 0.5 0.5 -0.5">
             <!-- Joint from right_hip_roll_to_yaw to right_hip_yaw_to_knee -->
-            <joint axis="0 0 1" name="right_hip_yaw" type="hinge" class="steadywin_GIM6010_8"/>
+            <joint axis="0 0 1" name="right_hip_yaw" type="hinge" range="-1.5707963222194081 1.570796331370385" class="steadywin_GIM6010_8"/>
             <inertial pos="-6.01852e-10 -0.00240575 -0.0825501" mass="0.688" fullinertia="0.00139735 0.00147146 0.000460223 -1.06662e-11 -1.67017e-11 -4.0779e-05"/>
             <!-- Part right_hip_yaw_to_knee -->
-            <geom type="mesh" class="visual" pos="0 0.12 0.09" quat="1 0 1.218e-27 -1.89327e-29" mesh="right_hip_yaw_to_knee" material="right_hip_yaw_to_knee_material"/>
+            <geom type="mesh" class="visual" pos="0 0.12 0.09" quat="1 -0 -8.67362e-19 1.91719e-16" mesh="right_hip_yaw_to_knee" material="right_hip_yaw_to_knee_material"/>
             <!-- Part gim6010_8_9 -->
-            <geom type="mesh" class="visual" pos="0 -0.02 -0.11" quat="0.707107 -0.707107 -0 -1.45147e-48" mesh="gim6010_8" material="gim6010_8_material"/>
+            <geom type="mesh" class="visual" pos="1.38778e-17 -0.02 -0.11" quat="0.707107 -0.707107 -0 -9.59898e-25" mesh="gim6010_8" material="gim6010_8_material"/>
             <!-- Link right_knee_to_ankle_pitch -->
-            <body name="right_knee_to_ankle_pitch" pos="0 0.02 -0.11" quat="0.707107 0.707107 -0 1.45147e-48">
+            <body name="right_knee_to_ankle_pitch" pos="2.77556e-17 0.02 -0.11" quat="0.707107 0.707107 0 4.31673e-17">
               <!-- Joint from right_hip_yaw_to_knee to right_knee_to_ankle_pitch -->
-              <joint axis="0 0 1" name="right_knee" type="hinge" class="steadywin_GIM6010_8"/>
+              <joint axis="0 0 1" name="right_knee" type="hinge" range="-2.2689280275926285 0.0" class="steadywin_GIM6010_8"/>
               <inertial pos="4.82013e-08 -0.149239 0.0200003" mass="0.788" fullinertia="0.00357604 0.000553221 0.00362879 -1.87021e-09 2.32028e-09 0.000244816"/>
               <!-- Part right_knee_to_ankle_pitch -->
-              <geom type="mesh" class="visual" pos="0 0.2 -0.1" quat="0.707107 -0.707107 0 -1.93529e-48" mesh="right_knee_to_ankle_pitch" material="right_knee_to_ankle_pitch_material"/>
+              <geom type="mesh" class="visual" pos="-1.38778e-17 0.2 -0.1" quat="0.707107 -0.707107 -0 4.48325e-26" mesh="right_knee_to_ankle_pitch" material="right_knee_to_ankle_pitch_material"/>
               <!-- Part gim6010_8_10 -->
               <geom type="mesh" class="visual" pos="0 -0.2 0.04" quat="0 1 0 0" mesh="gim6010_8" material="gim6010_8_material"/>
               <!-- Link right_foot_2 -->
-              <body name="right_foot_2" pos="0 -0.2 1.11022e-16" quat="1 -0 -0 4.37906e-46">
+              <body name="right_foot_2" pos="1.38778e-17 -0.2 7.63278e-17" quat="1 -0 -4.08426e-26 -2.22045e-16">
                 <!-- Joint from right_knee_to_ankle_pitch to right_foot_2 -->
-                <joint axis="0 0 1" name="right_ankle_pitch" type="hinge" class="steadywin_GIM6010_8"/>
-                <inertial pos="0.0194455 -0.0403674 0.00944551" mass="0.2" fullinertia="0.000264539 0.000619609 0.000659084 6.66303e-05 -4.10475e-05 6.66303e-05"/>
+                <joint axis="0 0 1" name="right_ankle_pitch" type="hinge" range="-1.5707963267948966 1.5707963267948966" class="steadywin_GIM6010_8"/>
+                <inertial pos="0.0131475 -0.0384421 0.008966" mass="0.2" fullinertia="0.000257266 0.000409095 0.000597862 7.57854e-05 -2.9014e-05 7.14802e-05"/>
                 <!-- Part right_foot_2 -->
-                <geom type="mesh" class="visual" pos="0 0.4 -0.1" quat="0.707107 -0.707107 -0 1.45147e-48" mesh="right_foot" material="right_foot_material"/>
-                <geom type="mesh" class="collision" pos="0 0.4 -0.1" quat="0.707107 -0.707107 -0 1.45147e-48" mesh="right_foot" material="right_foot_material" name="right_foot_contact"/>
+                <geom type="mesh" class="visual" pos="-1.38778e-17 0.4 -0.1" quat="0.707107 -0.707107 -0 7.64235e-26" mesh="right_foot" material="right_foot_material"/>
+                <geom type="mesh" class="collision" pos="-1.38778e-17 0.4 -0.1" quat="0.707107 -0.707107 -0 7.64235e-26" mesh="right_foot" material="right_foot_material" name="right_foot_contact"/>
                 <!-- Frame right_foot -->
-                <site group="3" name="right_foot" pos="0.03 -0.065 0.02" quat="0.707107 -0.707107 -0 1.45147e-48"/>
+                <site group="3" name="right_foot" pos="0.03 -0.075 0.02" quat="0.707107 -0.707107 -0 7.64235e-26"/>
               </body>
             </body>
           </body>
@@ -162,18 +162,18 @@
     </body>
   </worldbody>
   <asset>
-    <mesh file="right_knee_to_ankle_pitch.stl"/>
-    <mesh file="right_foot.stl"/>
-    <mesh file="left_hip_roll_to_yaw.stl"/>
-    <mesh file="left_hip_pitch_to_roll.stl"/>
-    <mesh file="right_hip_roll_to_yaw.stl"/>
-    <mesh file="trunk.stl"/>
-    <mesh file="left_knee_to_ankle_pitch.stl"/>
-    <mesh file="left_foot.stl"/>
-    <mesh file="right_hip_yaw_to_knee.stl"/>
-    <mesh file="right_hip_pitch_to_roll.stl"/>
     <mesh file="gim6010_8.stl"/>
+    <mesh file="right_hip_pitch_to_roll.stl"/>
+    <mesh file="right_hip_roll_to_yaw.stl"/>
+    <mesh file="left_knee_to_ankle_pitch.stl"/>
+    <mesh file="left_hip_roll_to_yaw.stl"/>
+    <mesh file="trunk.stl"/>
+    <mesh file="right_hip_yaw_to_knee.stl"/>
+    <mesh file="left_hip_pitch_to_roll.stl"/>
+    <mesh file="left_foot.stl"/>
     <mesh file="left_hip_yaw_to_knee.stl"/>
+    <mesh file="right_foot.stl"/>
+    <mesh file="right_knee_to_ankle_pitch.stl"/>
     <material name="gim6010_8_material" rgba="0.301961 0.301961 0.301961 1"/>
     <material name="trunk_material" rgba="0.615686 0.811765 0.929412 1"/>
     <material name="left_hip_pitch_to_roll_material" rgba="0.647059 0.647059 0.647059 1"/>
@@ -188,16 +188,16 @@
     <material name="right_foot_material" rgba="0.972549 0.529412 0.00392157 1"/>
   </asset>
   <actuator>
-    <position class="steadywin_GIM6010_8" name="left_hip_pitch" joint="left_hip_pitch"/>
-    <position class="steadywin_GIM6010_8" name="left_hip_roll" joint="left_hip_roll"/>
-    <position class="steadywin_GIM6010_8" name="left_hip_yaw" joint="left_hip_yaw"/>
-    <position class="steadywin_GIM6010_8" name="left_knee" joint="left_knee"/>
-    <position class="steadywin_GIM6010_8" name="left_ankle_pitch" joint="left_ankle_pitch"/>
-    <position class="steadywin_GIM6010_8" name="right_hip_pitch" joint="right_hip_pitch"/>
-    <position class="steadywin_GIM6010_8" name="right_hip_roll" joint="right_hip_roll"/>
-    <position class="steadywin_GIM6010_8" name="right_hip_yaw" joint="right_hip_yaw"/>
-    <position class="steadywin_GIM6010_8" name="right_knee" joint="right_knee"/>
-    <position class="steadywin_GIM6010_8" name="right_ankle_pitch" joint="right_ankle_pitch"/>
+    <position class="steadywin_GIM6010_8" name="left_hip_pitch" joint="left_hip_pitch" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="left_hip_roll" joint="left_hip_roll" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="left_hip_yaw" joint="left_hip_yaw" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="left_knee" joint="left_knee" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="left_ankle_pitch" joint="left_ankle_pitch" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="right_hip_pitch" joint="right_hip_pitch" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="right_hip_roll" joint="right_hip_roll" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="right_hip_yaw" joint="right_hip_yaw" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="right_knee" joint="right_knee" inheritrange="1"/>
+    <position class="steadywin_GIM6010_8" name="right_ankle_pitch" joint="right_ankle_pitch" inheritrange="1"/>
   </actuator>
   <equality/>
 </mujoco>
