@@ -16,3 +16,4 @@ TO TEST :
 - generate more reference motion
 - kp 
 - not raw imu 
+- increase feet contact sub reward
