@@ -218,6 +218,7 @@ class MjInfer(MJInferBase):
                         # head_targets = self.commands[3:]
                         # self.motor_targets[5:9] = head_targets
                         self.data.ctrl = self.motor_targets.copy()
+                        # self.data.ctrl = self.PRM.get_reference_motion(0, 0, 0, self.imitation_i)[:10]
 
                     viewer.sync()
 
