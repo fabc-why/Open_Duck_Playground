@@ -59,6 +59,9 @@ class MjInfer(MJInferBase):
 
         self.phase_frequency_factor = 1.0
 
+        self.left_knee_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, "left_knee") + 6
+        self.right_knee_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, "right_knee") + 6
+
         print(f"joint names: {self.joint_names}")
         print(f"actuator names: {self.actuator_names}")
         print(f"backlash joint names: {self.backlash_joint_names}")
@@ -128,9 +131,11 @@ class MjInfer(MJInferBase):
             if keycode == 69:  # e
                 ang_vel = self.COMMANDS_RANGE_THETA[0]
             if keycode == 80:  # p
-                self.phase_frequency_factor += 0.1
+                self.data.qvel[0] = 1.0
+                # self.phase_frequency_factor += 0.1
             if keycode == 59:  # m
-                self.phase_frequency_factor -= 0.1
+                self.data.qvel[0] = -1.0
+                # self.phase_frequency_factor -= 0.1
         else:
             neck_pitch = 0
             head_pitch = 0
@@ -173,6 +178,12 @@ class MjInfer(MJInferBase):
                     step_start = time.time()
 
                     mujoco.mj_step(self.model, self.data)
+
+                    left_knee_torque = self.data.qfrc_actuator[self.left_knee_id]
+                    right_knee_torque = self.data.qfrc_actuator[self.right_knee_id]
+                    print(
+                        f"Left knee torque: {np.around(left_knee_torque, 2)}, Right knee torque: {np.around(right_knee_torque, 2)}"
+                    )
 
                     counter += 1
 

@@ -98,17 +98,15 @@
               <!-- Part gim6010_8_6 -->
               <geom type="mesh" class="visual" pos="-2.77556e-17 -0.2 0" quat="0 1 0 0" mesh="gim6010_8" material="gim6010_8_material"/>
               <!-- Link left_foot_2 -->
-              <body name="left_foot_2" pos="-2.77556e-17 -0.2 2.77556e-17" quat="1 0 -1.11022e-16 3.46945e-17">
+              <body name="left_foot_2" pos="-2.77556e-17 -0.2 -2.77556e-17" quat="1 -0 -1.11022e-16 9.71445e-17">
                 <!-- Joint from left_knee_to_ankle_pitch to left_foot_2 -->
                 <joint axis="0 0 1" name="left_ankle_pitch" type="hinge" range="-1.5707963267948966 1.5707963267948966" class="steadywin_GIM6010_8"/>
-                <inertial pos="0.0202559 -0.0527376 -0.0136201" mass="0.4" fullinertia="0.000426448 0.00107974 0.00139386 0.000143357 5.16919e-05 -0.000119141"/>
-                <!-- Part left_foot_sole -->
-                <geom type="mesh" class="visual" pos="0 0.4 0.1" quat="0.707107 -0.707107 -0 3.77957e-24" mesh="left_foot_sole" material="left_foot_sole_material"/>
-                <geom type="mesh" class="collision" pos="0 0.4 0.1" quat="0.707107 -0.707107 -0 3.77957e-24" mesh="left_foot_sole" material="left_foot_sole_material" name="left_foot_contact"/>
+                <inertial pos="0.0131475 -0.0384421 -0.008966" mass="0.2" fullinertia="0.000257266 0.000409095 0.000597862 7.57854e-05 2.9014e-05 -7.14802e-05"/>
                 <!-- Part left_foot_2 -->
-                <geom type="mesh" class="visual" pos="-1.38778e-17 0.4 0.1" quat="0.707107 -0.707107 -0 -5.6708e-26" mesh="left_foot" material="left_foot_material"/>
+                <geom type="mesh" class="visual" pos="-1.38778e-17 0.4 0.1" quat="0.707107 -0.707107 -0 -3.70145e-26" mesh="left_foot" material="left_foot_material"/>
+                <geom type="mesh" class="collision" pos="-1.38778e-17 0.4 0.1" quat="0.707107 -0.707107 -0 -3.70145e-26" mesh="left_foot" material="left_foot_material" name="left_foot_contact"/>
                 <!-- Frame left_foot -->
-                <site group="3" name="left_foot" pos="0.03 -0.075 -0.02" quat="0.707107 -0.707107 -0 3.77957e-24"/>
+                <site group="3" name="left_foot" pos="0.03 -0.075 -0.02" quat="0.707107 -0.707107 -0 -3.70145e-26"/>
               </body>
             </body>
           </body>
@@ -151,17 +149,15 @@
               <!-- Part gim6010_8_10 -->
               <geom type="mesh" class="visual" pos="0 -0.2 0.04" quat="0 1 0 0" mesh="gim6010_8" material="gim6010_8_material"/>
               <!-- Link right_foot_2 -->
-              <body name="right_foot_2" pos="0 -0.2 4.85723e-17" quat="1 1.55583e-17 1.15648e-18 -2.69444e-25">
+              <body name="right_foot_2" pos="1.38778e-17 -0.2 7.63278e-17" quat="1 -0 -4.08426e-26 -2.22045e-16">
                 <!-- Joint from right_knee_to_ankle_pitch to right_foot_2 -->
                 <joint axis="0 0 1" name="right_ankle_pitch" type="hinge" range="-1.5707963267948966 1.5707963267948966" class="steadywin_GIM6010_8"/>
-                <inertial pos="0.0202559 -0.0527376 0.0136201" mass="0.4" fullinertia="0.000426448 0.00107974 0.00139386 0.000143357 -5.16919e-05 0.000119141"/>
+                <inertial pos="0.0131475 -0.0384421 0.008966" mass="0.2" fullinertia="0.000257266 0.000409095 0.000597862 7.57854e-05 -2.9014e-05 7.14802e-05"/>
                 <!-- Part right_foot_2 -->
-                <geom type="mesh" class="visual" pos="-1.38778e-17 0.4 -0.1" quat="0.707107 -0.707107 0 -6.3182e-26" mesh="right_foot" material="right_foot_material"/>
-                <!-- Part right_foot_sole -->
-                <geom type="mesh" class="visual" pos="4.16334e-17 0.4 -0.1" quat="0.707107 -0.707107 -0 -6.31821e-26" mesh="right_foot_sole" material="right_foot_sole_material"/>
-                <geom type="mesh" class="collision" pos="4.16334e-17 0.4 -0.1" quat="0.707107 -0.707107 -0 -6.31821e-26" mesh="right_foot_sole" material="right_foot_sole_material" name="right_foot_contact"/>
+                <geom type="mesh" class="visual" pos="-1.38778e-17 0.4 -0.1" quat="0.707107 -0.707107 -0 7.64235e-26" mesh="right_foot" material="right_foot_material"/>
+                <geom type="mesh" class="collision" pos="-1.38778e-17 0.4 -0.1" quat="0.707107 -0.707107 -0 7.64235e-26" mesh="right_foot" material="right_foot_material" name="right_foot_contact"/>
                 <!-- Frame right_foot -->
-                <site group="3" name="right_foot" pos="0.03 -0.075 0.02" quat="0.707107 -0.707107 -0 -6.31821e-26"/>
+                <site group="3" name="right_foot" pos="0.03 -0.075 0.02" quat="0.707107 -0.707107 -0 7.64235e-26"/>
               </body>
             </body>
           </body>
@@ -170,34 +166,30 @@
     </body>
   </worldbody>
   <asset>
-    <mesh file="trunk.stl"/>
-    <mesh file="left_foot_sole.stl"/>
-    <mesh file="right_hip_pitch_to_roll.stl"/>
-    <mesh file="left_hip_yaw_to_knee.stl"/>
-    <mesh file="left_knee_to_ankle_pitch.stl"/>
-    <mesh file="right_foot.stl"/>
-    <mesh file="right_hip_roll_to_yaw.stl"/>
-    <mesh file="right_hip_yaw_to_knee.stl"/>
-    <mesh file="right_foot_sole.stl"/>
-    <mesh file="left_hip_roll_to_yaw.stl"/>
-    <mesh file="left_hip_pitch_to_roll.stl"/>
     <mesh file="gim6010_8.stl"/>
-    <mesh file="right_knee_to_ankle_pitch.stl"/>
+    <mesh file="right_hip_pitch_to_roll.stl"/>
+    <mesh file="right_hip_roll_to_yaw.stl"/>
+    <mesh file="left_knee_to_ankle_pitch.stl"/>
+    <mesh file="left_hip_roll_to_yaw.stl"/>
+    <mesh file="trunk.stl"/>
+    <mesh file="right_hip_yaw_to_knee.stl"/>
+    <mesh file="left_hip_pitch_to_roll.stl"/>
     <mesh file="left_foot.stl"/>
+    <mesh file="left_hip_yaw_to_knee.stl"/>
+    <mesh file="right_foot.stl"/>
+    <mesh file="right_knee_to_ankle_pitch.stl"/>
     <material name="gim6010_8_material" rgba="0.301961 0.301961 0.301961 1"/>
     <material name="trunk_material" rgba="0.615686 0.811765 0.929412 1"/>
     <material name="left_hip_pitch_to_roll_material" rgba="0.647059 0.647059 0.647059 1"/>
     <material name="left_hip_roll_to_yaw_material" rgba="0.231373 0.380392 0.705882 1"/>
     <material name="left_hip_yaw_to_knee_material" rgba="0.917647 0.917647 0.917647 1"/>
     <material name="left_knee_to_ankle_pitch_material" rgba="0.768627 0.886275 0.952941 1"/>
-    <material name="left_foot_sole_material" rgba="0.301961 0.301961 0.301961 1"/>
     <material name="left_foot_material" rgba="0.972549 0.529412 0.00392157 1"/>
     <material name="right_hip_pitch_to_roll_material" rgba="0.647059 0.647059 0.647059 1"/>
     <material name="right_hip_roll_to_yaw_material" rgba="0.231373 0.380392 0.705882 1"/>
     <material name="right_hip_yaw_to_knee_material" rgba="0.917647 0.917647 0.917647 1"/>
     <material name="right_knee_to_ankle_pitch_material" rgba="0.768627 0.886275 0.952941 1"/>
     <material name="right_foot_material" rgba="0.972549 0.529412 0.00392157 1"/>
-    <material name="right_foot_sole_material" rgba="0.301961 0.301961 0.301961 1"/>
   </asset>
   <actuator>
     <position class="steadywin_GIM6010_8" name="left_hip_pitch" joint="left_hip_pitch" inheritrange="1"/>
