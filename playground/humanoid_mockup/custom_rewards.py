@@ -25,7 +25,7 @@ def reward_imitation(
     w_ang_vel_z = 0.5
     w_joint_pos = 15.0
     w_joint_vel = 1.0e-3
-    w_contact = 1.0
+    w_contact = 5.0
 
     #  TODO : double check if the slices are correct
 
