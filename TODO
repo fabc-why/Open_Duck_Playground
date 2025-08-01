@@ -1,7 +1,7 @@
 NEW IDEAS
 
 THIS RUN:
-action scale 1 
+action scale 0.25
 dof vel scale 0.1
 no stand still penalty (transition manually)
 push more frequently
@@ -14,13 +14,11 @@ push more frequently
 - increase feet contact sub reward -> cool
 - head cost -> maybe increase it ? or another way of taming the head ?
   - Maybe now I can get away with not letting the policy control the head ?
+- kp 16 (and new firmware identification values, not very different actually)
 
-DONT FORGET :
-- add back randomization
 
 TO TEST : 
 
-- kp 
 - try mansin imitation weights again ?
 
 NOTES:
