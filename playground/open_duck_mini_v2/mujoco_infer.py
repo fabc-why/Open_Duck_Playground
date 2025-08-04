@@ -11,7 +11,7 @@ from playground.common.utils import LowPassActionFilter
 
 from playground.open_duck_mini_v2.mujoco_infer_base import MJInferBase
 
-USE_MOTOR_SPEED_LIMITS = False
+USE_MOTOR_SPEED_LIMITS = True
 
 
 class MjInfer(MJInferBase):
