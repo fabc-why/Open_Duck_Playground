@@ -1,6 +1,6 @@
 NEW IDEAS
 
-THIS RUN:
+## THIS RUN:
 action scale 0.25
 dof vel scale 0.1
 no stand still penalty (transition manually)
@@ -18,11 +18,11 @@ imu gravity + gyro instead of raw gyro = accelero
 - kp 16 (and new firmware identification values, not very different actually)
 
 
-TO TEST : 
+## TO TEST : 
 
 - try mansin imitation weights again ?
 
-NOTES:
+## NOTES:
 - I can get away with not letting the policy control the head, but it tends to pitch the trunk down front in this case
 Not sure how this will all transfer on the real robot, I can try with 0.5 action scale too, and maybe go back to 0.25 to see ?
 
@@ -36,3 +36,6 @@ Not sure how this will all transfer on the real robot, I can try with 0.5 action
 TODO
 redo soft offsets
 
+## octuple check sim2real ? 
+- Replay a walking move in the air, log and look at the curves, compare with mujoco simulation
+- 
