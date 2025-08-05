@@ -86,9 +86,9 @@ class MjInfer(MJInferBase):
 
         obs = np.concatenate(
             [
+                accelerometer,
                 gyro,
-                # accelerometer,
-                gravity,
+                # gravity,
                 command,
                 joint_angles - self.default_actuator,
                 joint_vel * self.dof_vel_scale,

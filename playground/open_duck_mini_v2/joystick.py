@@ -569,8 +569,9 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
 
         state = jp.hstack(
             [
+                noisy_accelerometer,  # 3
                 noisy_gyro,  # 3
-                noisy_gravity,  # 3
+                # noisy_gravity,  # 3
                 info["command"],  # 3
                 noisy_joint_angles - self._default_actuator,  # 10
                 noisy_joint_vel * self._config.dof_vel_scale,  # 10
