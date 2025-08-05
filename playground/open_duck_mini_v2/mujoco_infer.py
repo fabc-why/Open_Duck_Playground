@@ -234,9 +234,9 @@ class MjInfer(MJInferBase):
 
                             self.prev_motor_targets = self.motor_targets.copy()
 
-                        # head_targets = self.commands[3:]
+                        head_targets = self.commands[3:]
                         # head_targets = [0.3, -0.3, 0.0, 0]
-                        # self.motor_targets[5:9] = head_targets
+                        self.motor_targets[5:9] += head_targets
                         self.data.ctrl = self.motor_targets.copy()
 
                     viewer.sync()
