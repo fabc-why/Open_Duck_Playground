@@ -37,14 +37,14 @@ from playground.common.rewards import (
     cost_torques,
     cost_action_rate,
     cost_stand_still,
-    reward_alive,
-    cost_head_pos,
+    reward_alive
 )
 from playground.open_duck_mini_v2.custom_rewards import reward_imitation
 
 # if set to false, won't require the reference data to be present and won't compute the reference motions polynoms for nothing
 USE_IMITATION_REWARD = True
 USE_MOTOR_SPEED_LIMITS = True
+MASK_HEAD = True
 
 
 def default_config() -> config_dict.ConfigDict:
@@ -65,9 +65,10 @@ def default_config() -> config_dict.ConfigDict:
             imu_min_delay=0,  # env steps
             imu_max_delay=3,  # env steps
             scales=config_dict.create(
-                hip_pos=0.03,  # rad, for each hip joint
-                knee_pos=0.05,  # rad, for each knee joint
-                ankle_pos=0.08,  # rad, for each ankle joint
+                # hip_pos=0.03,  # rad, for each hip joint
+                # knee_pos=0.05,  # rad, for each knee joint
+                # ankle_pos=0.08,  # rad, for each ankle joint
+                pos=0.05,  # rad, for each joint
                 joint_vel=2.5,  # rad/s # Was 1.5
                 gravity=0.1,
                 linvel=0.1,
@@ -80,18 +81,17 @@ def default_config() -> config_dict.ConfigDict:
                 tracking_lin_vel=2.5,
                 tracking_ang_vel=6.0,
                 torques=-1.0e-3,
-                action_rate=-0.5,  # was -2.0, made stable policy
+                action_rate=-2.0,  # was -2.0, made stable policy
                 stand_still=0.0,  # was -1.0 TODO try to relax this a bit ?
                 alive=20.0,
-                imitation=1.0,
-                head_pos=-1.0
+                imitation=1.0
             ),
             tracking_sigma=0.01,  # was working at 0.01
         ),
         push_config=config_dict.create(
             enable=True,
             interval_range=[3.0, 7.0],
-            magnitude_range=[0.3, 0.4],
+            magnitude_range=[0.3, 1.0],
         ),
         lin_vel_x=[-0.15, 0.15],
         lin_vel_y=[-0.2, 0.2],
@@ -121,7 +121,6 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         self._post_init()
 
     def _post_init(self) -> None:
-
         self._init_q = jp.array(self._mj_model.keyframe("home").qpos)
         self._default_actuator = self._mj_model.keyframe(
             "home"
@@ -139,23 +138,6 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         r = self._uppers - self._lowers
         self._soft_lowers = c - 0.5 * r * self._config.soft_joint_pos_limit_factor
         self._soft_uppers = c + 0.5 * r * self._config.soft_joint_pos_limit_factor
-
-        # weights for computing the cost of each joints compared to a reference pose
-        self._weights = jp.array(
-            [
-                1.0,
-                1.0,
-                0.01,
-                0.01,
-                1.0,  # left leg.
-                # 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, #head
-                1.0,
-                1.0,
-                0.01,
-                0.01,
-                1.0,  # right leg.
-            ]
-        )
 
         self._njoints = self._mj_model.njnt  # number of joints
         self._actuators = self._mj_model.nu  # number of actuators
@@ -182,32 +164,17 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
             )
         self._foot_linvel_sensor_adr = jp.array(foot_linvel_sensor_adr)
 
-        # # noise in the simu?
-        qpos_noise_scale = np.zeros(self._actuators)
-
-        hip_ids = [
-            idx for idx, j in enumerate(constants.JOINTS_ORDER_NO_HEAD) if "_hip" in j
-        ]
-        knee_ids = [
-            idx for idx, j in enumerate(constants.JOINTS_ORDER_NO_HEAD) if "_knee" in j
-        ]
-        ankle_ids = [
-            idx for idx, j in enumerate(constants.JOINTS_ORDER_NO_HEAD) if "_ankle" in j
-        ]
-
-        qpos_noise_scale[hip_ids] = self._config.noise_config.scales.hip_pos
-        qpos_noise_scale[knee_ids] = self._config.noise_config.scales.knee_pos
-        qpos_noise_scale[ankle_ids] = self._config.noise_config.scales.ankle_pos
-        # qpos_noise_scale[faa_ids] = self._config.noise_config.scales.faa_pos
-        self._qpos_noise_scale = jp.array(qpos_noise_scale)
-
-        # self.action_filter = LowPassActionFilter(
-        #     1 / self._config.ctrl_dt, cutoff_frequency=37.5
-        # )
+        if MASK_HEAD:
+            self._qpos_noise_scale = (
+                jp.ones(self._actuators - 4) * self._config.noise_config.scales.pos
+            )
+        else:
+            self._qpos_noise_scale = (
+                jp.ones(self._actuators) * self._config.noise_config.scales.pos
+            )
 
     def reset(self, rng: jax.Array) -> mjx_env.State:
         qpos = self._init_q  # the complete qpos
-        # print(f'DEBUG0 init qpos: {qpos}')
         qvel = jp.zeros(self.mjx_model.nv)
 
         # init position/orientation in environment
@@ -323,7 +290,6 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         return mjx_env.State(data, obs, reward, done, metrics, info)
 
     def step(self, state: mjx_env.State, action: jax.Array) -> mjx_env.State:
-
         if USE_IMITATION_REWARD:
             state.info["imitation_i"] += 1
             # state.info["imitation_i"] *= jp.linalg.norm(state.info["command"][:3]) != 0
@@ -420,6 +386,11 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
                 + self._config.max_motor_velocity * self.dt,  # control dt
             )
 
+        if MASK_HEAD:
+            motor_targets = motor_targets.at[5:9].set(
+                jp.zeros(4)
+            )  # or set values from command
+
         # motor_targets.at[5:9].set(state.info["command"][3:])  # head joints
         data = mjx_env.step(self.mjx_model, state.data, motor_targets, self.n_substeps)
 
@@ -491,7 +462,6 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
     def _get_obs(
         self, data: mjx.Data, info: dict[str, Any], contact: jax.Array
     ) -> mjx_env.Observation:
-
         gyro = self.get_gyro(data)
         info["rng"], noise_rng = jax.random.split(info["rng"])
         noisy_gyro = (
@@ -537,6 +507,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         joint_angles = self.get_actuator_joints_qpos(data.qpos)
         joint_backlash = self.get_actuator_backlash_qpos(data.qpos)
 
+        if MASK_HEAD:
+            joint_angles = jp.concatenate([joint_angles[:5], joint_angles[9:]])
+            joint_backlash = jp.concatenate([joint_backlash[:5], joint_backlash[9:]])
+
         for i in self.backlash_idx_to_add:
             joint_backlash = jp.insert(joint_backlash, i, 0)
 
@@ -552,6 +526,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
 
         # joint_vel = data.qvel[6:]
         joint_vel = self.get_actuator_joints_qvel(data.qvel)
+
+        if MASK_HEAD:
+            joint_vel = jp.concatenate([joint_vel[:5], joint_vel[9:]])
+
         info["rng"], noise_rng = jax.random.split(info["rng"])
         noisy_joint_vel = (
             joint_vel
@@ -569,18 +547,27 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         #     * self._config.noise_config.scales.linvel
         # )
 
+        home_offset = self._default_actuator
+        if MASK_HEAD:
+            home_offset = jp.concatenate([home_offset[:5], home_offset[9:]])
+            _motor_targets = jp.concatenate(
+                [info["motor_targets"][:5], info["motor_targets"][9:]]
+            )
+        else:
+            _motor_targets = info["motor_targets"]
+
         state = jp.hstack(
             [
                 noisy_accelerometer,  # 3
                 noisy_gyro,  # 3
                 # noisy_gravity,  # 3
-                info["command"],  # 3
-                noisy_joint_angles - self._default_actuator,  # 10
+                info["command"][:3],  # 3   
+                noisy_joint_angles - home_offset,  # 10
                 noisy_joint_vel * self._config.dof_vel_scale,  # 10
                 info["last_act"],  # 10
                 info["last_last_act"],  # 10
                 info["last_last_last_act"],  # 10
-                info["motor_targets"],  # 10
+                _motor_targets,
                 contact,  # 2
                 info["imitation_phase"],
             ]
@@ -599,7 +586,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
                 gravity,  # 3
                 linvel,  # 3
                 global_angvel,  # 3
-                joint_angles - self._default_actuator,
+                joint_angles - home_offset,  # 10
                 joint_vel,
                 root_height,  # 1
                 data.actuator_force,  # 10
@@ -661,12 +648,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
                 self.get_actuator_joints_qvel(data.qvel),
                 self._default_actuator,
                 ignore_head=False,
-            ),
-            "head_pos": cost_head_pos(
-                self.get_actuator_joints_qpos(data.qpos),
-                self.get_actuator_joints_qvel(data.qvel),
-                info["command"],
-            ),
+            )
         }
 
         return ret

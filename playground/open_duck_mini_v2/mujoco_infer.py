@@ -12,6 +12,7 @@ from playground.common.utils import LowPassActionFilter
 from playground.open_duck_mini_v2.mujoco_infer_base import MJInferBase
 
 USE_MOTOR_SPEED_LIMITS = True
+MASK_HEAD = True
 
 
 class MjInfer(MJInferBase):
@@ -79,23 +80,38 @@ class MjInfer(MJInferBase):
         joint_angles = self.get_actuator_joints_qpos(data.qpos)
         joint_vel = self.get_actuator_joints_qvel(data.qvel)
 
+        if MASK_HEAD:
+            joint_angles = np.concatenate([joint_angles[:5], joint_angles[9:]])
+            joint_vel = np.concatenate([joint_vel[:5], joint_vel[9:]])
+
         contacts = self.get_feet_contacts(data)
 
         # if not self.standing:
         # ref = self.PRM.get_reference_motion(*command[:3], self.imitation_i)
 
+        home_offset = self.default_actuator
+        if MASK_HEAD:
+            home_offset = np.concatenate(
+                [home_offset[:5], home_offset[9:]]
+            )  # remove head joints
+            _motor_targets = np.concatenate(
+                [self.motor_targets[:5], self.motor_targets[9:]]
+            )  # remove head joints
+        else:
+            _motor_targets = self.motor_targets
+
         obs = np.concatenate(
             [
                 accelerometer,
-                gyro, # 3
+                gyro,  # 3
                 # gravity, # 3
-                command, # 7
-                joint_angles - self.default_actuator, # 14
-                joint_vel * self.dof_vel_scale, # 14
+                command[:3],  # 7
+                joint_angles - home_offset,  # 14
+                joint_vel * self.dof_vel_scale,  # 14
                 self.last_action,
                 self.last_last_action,
                 self.last_last_last_action,
-                self.motor_targets,
+                _motor_targets,
                 contacts,
                 # ref if not self.standing else np.array([]),
                 # [self.imitation_i]
@@ -169,7 +185,6 @@ class MjInfer(MJInferBase):
             ) as viewer:
                 counter = 0
                 while True:
-
                     step_start = time.time()
 
                     mujoco.mj_step(self.model, self.data)
@@ -234,9 +249,13 @@ class MjInfer(MJInferBase):
 
                             self.prev_motor_targets = self.motor_targets.copy()
 
-                        # head_targets = self.commands[3:]
+                        head_targets = self.commands[3:]
                         # head_targets = [0.3, -0.3, 0.0, 0]
-                        # self.motor_targets[5:9] += head_targets
+                        self.motor_targets[5:9] = head_targets
+
+                        # if MASK_HEAD:
+                        #     self.motor_targets[5:9] = np.zeros(4)
+
                         self.data.ctrl = self.motor_targets.copy()
 
                     viewer.sync()
@@ -251,7 +270,6 @@ class MjInfer(MJInferBase):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
     parser.add_argument("-o", "--onnx_model_path", type=str, required=True)
     # parser.add_argument("-k", action="store_true", default=False)
