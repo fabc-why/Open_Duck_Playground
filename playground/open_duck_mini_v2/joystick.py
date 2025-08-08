@@ -45,6 +45,7 @@ from playground.open_duck_mini_v2.custom_rewards import reward_imitation
 # if set to false, won't require the reference data to be present and won't compute the reference motions polynoms for nothing
 USE_IMITATION_REWARD = True
 USE_MOTOR_SPEED_LIMITS = True
+MASK_HEAD = True
 
 
 def default_config() -> config_dict.ConfigDict:
@@ -85,7 +86,7 @@ def default_config() -> config_dict.ConfigDict:
                 stand_still=0.0,  # was -1.0 TODO try to relax this a bit ?
                 alive=20.0,
                 imitation=1.0,
-                head_pos=-1.0
+                head_pos=-1.0,
             ),
             tracking_sigma=0.01,  # was working at 0.01
         ),
@@ -122,7 +123,6 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         self._post_init()
 
     def _post_init(self) -> None:
-
         self._init_q = jp.array(self._mj_model.keyframe("home").qpos)
         self._default_actuator = self._mj_model.keyframe(
             "home"
@@ -185,7 +185,14 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         # # qpos_noise_scale[faa_ids] = self._config.noise_config.scales.faa_pos
 
         # self._qpos_noise_scale = jp.array(qpos_noise_scale)
-        self._qpos_noise_scale = jp.ones(self._actuators) * self._config.noise_config.scales.pos
+        if MASK_HEAD:
+            self._qpos_noise_scale = (
+                jp.ones(self._actuators - 4) * self._config.noise_config.scales.pos
+            )
+        else:
+            self._qpos_noise_scale = (
+                jp.ones(self._actuators) * self._config.noise_config.scales.pos
+            )
 
         # self.action_filter = LowPassActionFilter(
         #     1 / self._config.ctrl_dt, cutoff_frequency=37.5
@@ -309,7 +316,6 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         return mjx_env.State(data, obs, reward, done, metrics, info)
 
     def step(self, state: mjx_env.State, action: jax.Array) -> mjx_env.State:
-
         if USE_IMITATION_REWARD:
             state.info["imitation_i"] += 1
             # state.info["imitation_i"] *= jp.linalg.norm(state.info["command"][:3]) != 0
@@ -406,6 +412,11 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
                 + self._config.max_motor_velocity * self.dt,  # control dt
             )
 
+        if MASK_HEAD:
+            motor_targets = motor_targets.at[5:9].set(
+                jp.zeros(4)
+            )  # or set values from command
+
         # motor_targets.at[5:9].set(state.info["command"][3:])  # head joints
         data = mjx_env.step(self.mjx_model, state.data, motor_targets, self.n_substeps)
 
@@ -477,7 +488,6 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
     def _get_obs(
         self, data: mjx.Data, info: dict[str, Any], contact: jax.Array
     ) -> mjx_env.Observation:
-
         gyro = self.get_gyro(data)
         info["rng"], noise_rng = jax.random.split(info["rng"])
         noisy_gyro = (
@@ -523,6 +533,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         joint_angles = self.get_actuator_joints_qpos(data.qpos)
         joint_backlash = self.get_actuator_backlash_qpos(data.qpos)
 
+        if MASK_HEAD:
+            joint_angles = jp.concatenate([joint_angles[:5], joint_angles[9:]])
+            joint_backlash = jp.concatenate([joint_backlash[:5], joint_backlash[9:]])
+
         for i in self.backlash_idx_to_add:
             joint_backlash = jp.insert(joint_backlash, i, 0)
 
@@ -538,6 +552,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
 
         # joint_vel = data.qvel[6:]
         joint_vel = self.get_actuator_joints_qvel(data.qvel)
+
+        if MASK_HEAD:
+            joint_vel = jp.concatenate([joint_vel[:5], joint_vel[9:]])
+
         info["rng"], noise_rng = jax.random.split(info["rng"])
         noisy_joint_vel = (
             joint_vel
@@ -555,18 +573,27 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
         #     * self._config.noise_config.scales.linvel
         # )
 
+        home_offset = self._default_actuator
+        if MASK_HEAD:
+            home_offset = jp.concatenate([home_offset[:5], home_offset[9:]])
+            _motor_targets = jp.concatenate(
+                [info["motor_targets"][:5], info["motor_targets"][9:]]
+            )
+        else:
+            _motor_targets = info["motor_targets"]
+
         state = jp.hstack(
             [
                 noisy_accelerometer,  # 3
                 noisy_gyro,  # 3
                 # noisy_gravity,  # 3
-                info["command"],  # 3
-                noisy_joint_angles - self._default_actuator,  # 10
+                info["command"][:3],  # 3   
+                noisy_joint_angles - home_offset,  # 10
                 noisy_joint_vel * self._config.dof_vel_scale,  # 10
                 info["last_act"],  # 10
                 info["last_last_act"],  # 10
                 info["last_last_last_act"],  # 10
-                info["motor_targets"],  # 10
+                _motor_targets,
                 contact,  # 2
                 info["imitation_phase"],
             ]
@@ -585,7 +612,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
                 gravity,  # 3
                 linvel,  # 3
                 global_angvel,  # 3
-                joint_angles - self._default_actuator,
+                joint_angles - home_offset,  # 10
                 joint_vel,
                 root_height,  # 1
                 data.actuator_force,  # 10

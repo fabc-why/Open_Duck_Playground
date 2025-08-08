@@ -33,7 +33,7 @@ viewer = mujoco.viewer.launch_passive(
     show_right_ui=False,
 )
 
-policy = OnnxInfer("ONNX.onnx", awd=True)
+# policy = OnnxInfer("ONNX.onnx", awd=True)
 # Viewer only
 # while True:
 #     data.qpos[:]= model.keyframe("home").qpos
@@ -52,8 +52,8 @@ print("Stepping...")
 while True:
     s = time.time()
     obs = np.array(state.obs['state'])
-    action = policy.infer(obs)
-    # action = np.zeros(14)
+    # action = policy.infer(obs)
+    action = np.zeros(14)
 
     state = step_fn(state, jp.array(action))
     if state.done:
