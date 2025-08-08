@@ -1,4 +1,5 @@
 import jax
+import time
 import numpy as np
 import os
 import mujoco
@@ -32,7 +33,7 @@ viewer = mujoco.viewer.launch_passive(
     show_right_ui=False,
 )
 
-# policy = OnnxInfer("ONNX.onnx", awd=True)
+policy = OnnxInfer("ONNX.onnx", awd=True)
 # Viewer only
 # while True:
 #     data.qpos[:]= model.keyframe("home").qpos
@@ -49,16 +50,24 @@ step_fn = jax.jit(env.step)
 
 print("Stepping...")
 while True:
+    s = time.time()
     obs = np.array(state.obs['state'])
-    # action = policy.infer(obs)
-    action = np.zeros(14)
+    action = policy.infer(obs)
+    # action = np.zeros(14)
 
     state = step_fn(state, jp.array(action))
+    if state.done:
+        print("Resetting...")
+        key = jax.random.key(np.random.randint(0, 10000))
+        state = env.reset(key)
 
-    print(state.metrics)
-    print(state.reward)
-    print("==")
+    # print(state.metrics)
+    # print(state.reward)
+    # print("==")
     data.qpos[:] = state.data.qpos
     mujoco.mj_forward(model, data)
     viewer.sync()
+
+    took = time.time() - s
+    time.sleep(max(0, env.dt - took))
     # input()
