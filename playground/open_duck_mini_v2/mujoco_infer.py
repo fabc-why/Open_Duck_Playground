@@ -17,12 +17,11 @@ MASK_HEAD = True
 
 class MjInfer(MJInferBase):
     def __init__(
-        self, model_path: str, reference_data: str, onnx_model_path: str, standing: bool
+        self, model_path: str, reference_data: str, onnx_model_path: str
     ):
         super().__init__(model_path)
 
-        self.standing = standing
-        self.head_control_mode = self.standing
+        self.head_control_mode = False
 
         # Params
         self.linearVelocityScale = 1.0
@@ -33,8 +32,7 @@ class MjInfer(MJInferBase):
 
         self.action_filter = LowPassActionFilter(50, cutoff_frequency=37.5)
 
-        if not self.standing:
-            self.PRM = PolyReferenceMotion(reference_data)
+        self.PRM = PolyReferenceMotion(reference_data)
 
         self.policy = OnnxInfer(onnx_model_path, awd=True)
 
@@ -86,8 +84,6 @@ class MjInfer(MJInferBase):
 
         contacts = self.get_feet_contacts(data)
 
-        # if not self.standing:
-        # ref = self.PRM.get_reference_motion(*command[:3], self.imitation_i)
 
         home_offset = self.default_actuator
         if MASK_HEAD:
@@ -113,8 +109,6 @@ class MjInfer(MJInferBase):
                 self.last_last_last_action,
                 _motor_targets,
                 contacts,
-                # ref if not self.standing else np.array([]),
-                # [self.imitation_i]
                 self.imitation_phase,
             ]
         )
@@ -192,32 +186,31 @@ class MjInfer(MJInferBase):
                     counter += 1
 
                     if counter % self.decimation == 0:
-                        if not self.standing:
-                            if np.linalg.norm(self.commands[:3]) > 0.01:
-                                self.imitation_i += 1.0 * self.phase_frequency_factor
-                            else:
-                                self.imitation_i = 0.0
-                            self.imitation_i = (
-                                self.imitation_i % self.PRM.nb_steps_in_period
-                            )
-                            # print(self.PRM.nb_steps_in_period)
-                            # exit()
-                            self.imitation_phase = np.array(
-                                [
-                                    np.cos(
-                                        self.imitation_i
-                                        / self.PRM.nb_steps_in_period
-                                        * 2
-                                        * np.pi
-                                    ),
-                                    np.sin(
-                                        self.imitation_i
-                                        / self.PRM.nb_steps_in_period
-                                        * 2
-                                        * np.pi
-                                    ),
-                                ]
-                            )
+
+                        if np.linalg.norm(self.commands[:3]) > 0.01:
+                            self.imitation_i += 1.0 * self.phase_frequency_factor
+                        else:
+                            self.imitation_i = 0.0
+                        self.imitation_i = (
+                            self.imitation_i % self.PRM.nb_steps_in_period
+                        )
+
+                        self.imitation_phase = np.array(
+                            [
+                                np.cos(
+                                    self.imitation_i
+                                    / self.PRM.nb_steps_in_period
+                                    * 2
+                                    * np.pi
+                                ),
+                                np.sin(
+                                    self.imitation_i
+                                    / self.PRM.nb_steps_in_period
+                                    * 2
+                                    * np.pi
+                                ),
+                            ]
+                        )
                         obs = self.get_obs(
                             self.data,
                             self.commands,
@@ -283,11 +276,10 @@ if __name__ == "__main__":
         type=str,
         default="playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml",
     )
-    parser.add_argument("--standing", action="store_true", default=False)
 
     args = parser.parse_args()
 
     mjinfer = MjInfer(
-        args.model_path, args.reference_data, args.onnx_model_path, args.standing
+        args.model_path, args.reference_data, args.onnx_model_path
     )
     mjinfer.run()
