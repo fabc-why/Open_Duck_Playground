@@ -26,8 +26,20 @@ Not sure how this will all transfer on the real robot, I can try with 0.5 action
 - kp 16 seems promising ! Need to fine tune a good policy for this, but it behaves much better than before when reducing the kp !
 - going back to RAW imu seems to improve already ... (early checkpoint)
 
-- I have a lot of "static shaking", probably due to over reaction of the policy. find a way to fix that
-- It also tends to fall backwards when standing still, and tries to make small steps to catch itself
+- I have a lot of "static shaking", probably due to over reaction of the policy. find a way to fix that -> getting better too
+- It also tends to fall backwards when standing still, and tries to make small steps to catch itself -> getting better
+  
+- It seems to take a long time to start to learn to walk compared to sigmaban. Maybe the action rate penalty makes it too difficult
+  - Also, increasing the foot contact subreward seems to help 
+
+- I'm trying to fix the no reaction to pushes right now
+  - Maybe we just push too much, so it just learns to ignore it (trying with lower push magnitude)
+
+# TO TEST
+(when I mean work, i mean it transfers)
+- action rate penalty at -2.0 works, -1.5 works too, will try to reduce it to -1.0
+- increase dof vel scale progressively
+- 
 
 # CHECKPOINT
 8e9d0f173acec0991a2d91a3143dcb11b1cb7ac3
