@@ -81,7 +81,7 @@ def default_config() -> config_dict.ConfigDict:
                 tracking_lin_vel=2.5,
                 tracking_ang_vel=6.0,
                 torques=-1.0e-3,
-                action_rate=-2.0,  # was -2.0, made stable policy
+                action_rate=-0.5,  # was -2.0, made stable policy
                 stand_still=-1.0,
                 alive=20.0,
                 imitation=1.0
