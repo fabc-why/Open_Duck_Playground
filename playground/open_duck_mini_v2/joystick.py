@@ -42,7 +42,7 @@ from playground.common.rewards import (
 from playground.open_duck_mini_v2.custom_rewards import reward_imitation
 
 # if set to false, won't require the reference data to be present and won't compute the reference motions polynoms for nothing
-USE_IMITATION_REWARD = False
+USE_IMITATION_REWARD = True
 USE_MOTOR_SPEED_LIMITS = True
 MASK_HEAD = True
 
@@ -82,9 +82,9 @@ def default_config() -> config_dict.ConfigDict:
                 tracking_ang_vel=6.0,
                 torques=-1.0e-3,
                 action_rate=-2.0,  # was -2.0, made stable policy
-                stand_still=-1.0,
+                stand_still=0.0,
                 alive=20.0,
-                imitation=0.0
+                imitation=1.0
             ),
             tracking_sigma=0.01,  # was working at 0.01
         ),
@@ -292,7 +292,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
     def step(self, state: mjx_env.State, action: jax.Array) -> mjx_env.State:
         if USE_IMITATION_REWARD:
             state.info["imitation_i"] += 1
-            # state.info["imitation_i"] *= jp.linalg.norm(state.info["command"][:3]) != 0
+            state.info["imitation_i"] *= jp.linalg.norm(state.info["command"][:3]) != 0
 
             state.info["imitation_i"] = (
                 state.info["imitation_i"] % self.PRM.nb_steps_in_period
