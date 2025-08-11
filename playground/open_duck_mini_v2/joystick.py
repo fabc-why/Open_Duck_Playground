@@ -82,7 +82,7 @@ def default_config() -> config_dict.ConfigDict:
                 tracking_ang_vel=6.0,
                 torques=-1.0e-3,
                 action_rate=-2.0,  # was -2.0, made stable policy
-                stand_still=0.0,
+                stand_still=-1.0,
                 alive=20.0,
                 imitation=1.0
             ),
@@ -292,7 +292,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
     def step(self, state: mjx_env.State, action: jax.Array) -> mjx_env.State:
         if USE_IMITATION_REWARD:
             state.info["imitation_i"] += 1
-            state.info["imitation_i"] *= jp.linalg.norm(state.info["command"][:3]) != 0
+            # state.info["imitation_i"] *= jp.linalg.norm(state.info["command"][:3]) != 0
 
             state.info["imitation_i"] = (
                 state.info["imitation_i"] % self.PRM.nb_steps_in_period
@@ -698,7 +698,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
 
         # With 10% chance, set everything to zero.
         return jp.where(
-            jax.random.bernoulli(rng4, p=1.0),
+            jax.random.bernoulli(rng4, p=0.1),
             jp.zeros(7),
             jp.hstack(
                 [
