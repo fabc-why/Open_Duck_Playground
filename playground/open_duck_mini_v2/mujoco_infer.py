@@ -41,8 +41,6 @@ class MjInfer(MJInferBase):
         self.use_joystick = use_joystick
         self.joystick1 = None
         self.joystick2 = None
-        self.keyboard_commands = [0.0, 0.0, 0.0]
-        self.joystick_commands = [0.0, 0.0, 0.0]
 
         if self.use_joystick:
             pygame.init()
@@ -179,9 +177,6 @@ class MjInfer(MJInferBase):
             self.commands[5] = head_yaw
             self.commands[6] = head_roll
 
-        self.keyboard_commands[0] = lin_vel_x
-        self.keyboard_commands[1] = lin_vel_y
-        self.keyboard_commands[2] = ang_vel
         self.commands[0] = lin_vel_x
         self.commands[1] = lin_vel_y
         self.commands[2] = ang_vel
@@ -193,26 +188,44 @@ class MjInfer(MJInferBase):
             return
 
         pygame.event.pump()
-        joy_y = self.joystick1.get_axis(1)
-        joy_x = self.joystick1.get_axis(0)
-        joy_z = self.joystick1.get_axis(3)
+        joy_y = self.joystick1.get_axis(1) #前後
+        joy_x = self.joystick1.get_axis(0) #左右
+        joy_x2 = self.joystick1.get_axis(3) #首上下 (うごかない)
+        joy_y2 = self.joystick1.get_axis(4) #首左右 (うごかない)
 
-        if joy_y < 0:
-            lin_vel_x = (-joy_y) * self.COMMANDS_RANGE_X[1]
-        else:
-            lin_vel_x = -joy_y * abs(self.COMMANDS_RANGE_X[0])
+        # -1 ~ 1なので、0~1に変換
+        joy_lt = (self.joystick1.get_axis(2) + 1) / 2  # 左旋回
+        joy_rt = (self.joystick1.get_axis(5) + 1) / 2  # 右旋回
 
-        lin_vel_y = -joy_x * self.COMMANDS_RANGE_Y[1]
-        ang_vel = -joy_z * self.COMMANDS_RANGE_THETA[1]
 
-        self.joystick_commands[0] = lin_vel_x
-        self.joystick_commands[1] = lin_vel_y
-        self.joystick_commands[2] = ang_vel
+        #前進後退
+        lin_vel_x = -joy_y * self.COMMANDS_RANGE_X[1] if joy_y > 0 else joy_y * self.COMMANDS_RANGE_X[0]
 
-        self.commands[0] = self.joystick_commands[0]
-        self.commands[1] = self.joystick_commands[1]
-        self.commands[2] = self.joystick_commands[2]
+        #横歩き
+        lin_vel_y = -joy_x * self.COMMANDS_RANGE_Y[1] if joy_x > 0 else joy_x * self.COMMANDS_RANGE_Y[0]
 
+        #左右旋回
+        ang_vel = joy_lt * self.COMMANDS_RANGE_THETA[1] + joy_rt * self.COMMANDS_RANGE_THETA[0]
+
+        #首上下
+        head_pitch = -joy_x2 * self.NECK_PITCH_RANGE[1] if joy_x2 > 0 else joy_x2 * self.NECK_PITCH_RANGE[0]
+
+        #首左右
+        head_yaw = -joy_y2 * self.HEAD_YAW_RANGE[1] if joy_y2 > 0 else joy_y2 * self.HEAD_YAW_RANGE[0]
+
+
+
+        self.commands[0] = lin_vel_x #左右移動
+        self.commands[1] = lin_vel_y #前後移動
+        self.commands[2] = ang_vel #旋回
+        #self.commands[3] = 0 #わからない
+        self.commands[4] = head_pitch #首上下 (ごく僅かに動いてる気がする)
+        self.commands[5] = head_yaw #首左右 (ごく僅かに動いてる気がする)
+        # self.commands[6] = head_roll #首かしげる 割り当てるキーがない！ (ほとんど動いてないしまあいいか)
+
+        threshold = 0.02
+        self.commands = [x if abs(x) > threshold else 0 for x in self.commands]
+        print(f"joystick commands: {self.commands}")
 
     def run(self):
         try:
@@ -228,6 +241,7 @@ class MjInfer(MJInferBase):
 
                     step_start = time.time()
 
+                    #if joystick is available and user is using it, handle joystick input
                     if self.use_joystick:
                         self.handle_joystick()
 
