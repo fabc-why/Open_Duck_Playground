@@ -312,6 +312,7 @@
                 <!-- Frame head -->
                 <site group="0" name="head" pos="0.04245 1.88922e-17 0.03595"
                   quat="0.707107 2.48509e-16 0.707107 5.27356e-16"/>
+                <camera name="robot_head_cam" pos="0 0 -0.062" euler="0 0 -1.570796327"/>
               </body>
             </body>
           </body>
