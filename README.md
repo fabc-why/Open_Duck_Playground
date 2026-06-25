@@ -1,98 +1,39 @@
-# Open Duck Playground
+# Open Duck Playground (Forked Version)
 
-# Installation 
+This repository is a fork of the original project:
 
-Install uv
+👉 https://github.com/apirrone/Open_Duck_Playground
 
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
+## 📌 About this Repository
 
-# Training
+This project is based on the excellent work by [apirrone](https://github.com/apirrone).  
+The original repository provided the foundation for this fork, and we build upon it with modifications, improvements, and experiments.
 
-If you want to use the [imitation reward](https://la.disneyresearch.com/wp-content/uploads/BD_X_paper.pdf), you can generate reference motion with [this repo](https://github.com/apirrone/Open_Duck_reference_motion_generator)
+## 🔀 Fork Information
 
-Then copy `polynomial_coefficients.pkl` in `playground/<robot>/data/`
+- **Original Repository**: https://github.com/apirrone/Open_Duck_Playground  
+- **Forked From**: apirrone/Open_Duck_Playground  
+- **Purpose of Fork**:
+  - Custom modifications
+  - Feature experiments
+  - Personal improvements / extensions
 
-You'll also have to set `USE_IMITATION_REWARD=True` in it's `joystick.py` file
+## ⚙️ Changes in This Fork
 
-Run: 
+Compared to the original repository, this fork includes:
 
-```bash
-uv run playground/<robot>/runner.py 
-```
+- ✅ Enable Joustick controller  
+- ✅ Add camera to head
+- ✅ Some changes for tele-operation
 
-## Tensorboard
+## 🙏 Acknowledgements
 
-```bash
-uv run tensorboard --logdir=<yourlogdir>
-```
+All credit for the original idea and implementation goes to the original author:
 
-# Inference 
+- **apirrone** — https://github.com/apirrone
 
-Infer mujoco
+If you find this project useful, please also consider supporting the original repository.
 
-(for now this is specific to open_duck_mini_v2)
+## 📄 License
 
-```bash
-uv run playground/open_duck_mini_v2/mujoco_infer.py -o <path_to_.onnx>
-```
-
-# Documentation
-
-## Project structure : 
-
-```
-.
-├── pyproject.toml
-├── README.md
-├── playground
-│   ├── common
-│   │   ├── export_onnx.py
-│   │   ├── onnx_infer.py
-│   │   ├── poly_reference_motion.py
-│   │   ├── randomize.py
-│   │   ├── rewards.py
-│   │   └── runner.py
-│   ├── open_duck_mini_v2
-│   │   ├── base.py
-│   │   ├── data
-│   │   │   └── polynomial_coefficients.pkl
-│   │   ├── joystick.py
-│   │   ├── mujoco_infer.py
-│   │   ├── constants.py
-│   │   ├── runner.py
-│   │   └── xmls
-│   │       ├── assets
-│   │       ├── open_duck_mini_v2_no_head.xml
-│   │       ├── open_duck_mini_v2.xml
-│   │       ├── scene_mjx_flat_terrain.xml
-│   │       ├── scene_mjx_rough_terrain.xml
-│   │       └── scene.xml
-```
-
-## Adding a new robot
-
-Create a new directory in `playground` named after `<your robot>`. You can copy the `open_duck_mini_v2` directory as a starting point.
-
-You will need to:
-- Edit `base.py`: Mainly renaming stuff to match you robot's name
-- Edit `constants.py`: specify the names of some important geoms, sensors etc
-  - In your `mjcf`, you'll probably have to add some sites, name some bodies/geoms and add the sensors. Look at how we did it for `open_duck_mini_v2`
-- Add your `mjcf` assets in `xmls`. 
-- Edit `joystick.py` : to choose the rewards you are interested in
-  - Note: for now there is still some hard coded values etc. We'll improve things on the way
-- Edit `runner.py`
-
-
-
-# Notes
-
-Inspired from https://github.com/kscalelabs/mujoco_playground
-
-
-## Current win
-
-```bash
-uv run playground/open_duck_mini_v2/runner.py --task flat_terrain_backlash --num_timesteps 300000000
-```
+This project follows the same license as the original repository unless otherwise specified.
