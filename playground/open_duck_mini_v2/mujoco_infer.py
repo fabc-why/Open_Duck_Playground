@@ -3,7 +3,6 @@ import pickle
 import numpy as np
 import mujoco
 import mujoco.viewer
-import pygame
 import time
 import argparse
 from playground.common.onnx_infer import OnnxInfer
@@ -17,12 +16,7 @@ USE_MOTOR_SPEED_LIMITS = True
 
 class MjInfer(MJInferBase):
     def __init__(
-        self,
-        model_path: str,
-        reference_data: str,
-        onnx_model_path: str,
-        standing: bool,
-        use_joystick: bool = True,
+        self, model_path: str, reference_data: str, onnx_model_path: str, standing: bool
     ):
         super().__init__(model_path)
 
@@ -37,28 +31,6 @@ class MjInfer(MJInferBase):
         self.action_scale = 0.25
 
         self.action_filter = LowPassActionFilter(50, cutoff_frequency=37.5)
-
-        self.use_joystick = use_joystick
-        self.joystick1 = None
-        self.joystick2 = None
-
-        if self.use_joystick:
-            pygame.init()
-            pygame.joystick.init()
-            if pygame.joystick.get_count() > 0:
-                self.joystick1 = pygame.joystick.Joystick(0)
-                self.joystick1.init()
-                print("Joystick initialized:", self.joystick1.get_name())
-                if pygame.joystick.get_count() > 1:
-                    self.joystick2 = pygame.joystick.Joystick(1)
-                    self.joystick2.init()
-                    print("Joystick 2 (theta) initialized:", self.joystick2.get_name())
-                else:
-                    print(
-                        "Only one joystick detected; theta via second joystick will be disabled."
-                    )
-            else:
-                print("No joystick found!")
 
         if not self.standing:
             self.PRM = PolyReferenceMotion(reference_data)
@@ -181,69 +153,19 @@ class MjInfer(MJInferBase):
         self.commands[1] = lin_vel_y
         self.commands[2] = ang_vel
 
-
-
-    def handle_joystick(self):
-        if self.joystick1 is None:
-            return
-
-        pygame.event.pump()
-        joy_y = self.joystick1.get_axis(1) #前後
-        joy_x = self.joystick1.get_axis(0) #左右
-        joy_x2 = self.joystick1.get_axis(3) #首上下 (うごかない)
-        joy_y2 = self.joystick1.get_axis(4) #首左右 (うごかない)
-
-        # -1 ~ 1なので、0~1に変換
-        joy_lt = (self.joystick1.get_axis(2) + 1) / 2  # 左旋回
-        joy_rt = (self.joystick1.get_axis(5) + 1) / 2  # 右旋回
-
-
-        #前進後退
-        lin_vel_x = -joy_y * self.COMMANDS_RANGE_X[1] if joy_y > 0 else joy_y * self.COMMANDS_RANGE_X[0]
-
-        #横歩き
-        lin_vel_y = -joy_x * self.COMMANDS_RANGE_Y[1] if joy_x > 0 else joy_x * self.COMMANDS_RANGE_Y[0]
-
-        #左右旋回
-        ang_vel = joy_lt * self.COMMANDS_RANGE_THETA[1] + joy_rt * self.COMMANDS_RANGE_THETA[0]
-
-        #首上下
-        head_pitch = -joy_x2 * self.NECK_PITCH_RANGE[1] if joy_x2 > 0 else joy_x2 * self.NECK_PITCH_RANGE[0]
-
-        #首左右
-        head_yaw = -joy_y2 * self.HEAD_YAW_RANGE[1] if joy_y2 > 0 else joy_y2 * self.HEAD_YAW_RANGE[0]
-
-
-
-        self.commands[0] = lin_vel_x #左右移動
-        self.commands[1] = lin_vel_y #前後移動
-        self.commands[2] = ang_vel #旋回
-        #self.commands[3] = 0 #わからない
-        self.commands[4] = head_pitch #首上下 (ごく僅かに動いてる気がする)
-        self.commands[5] = head_yaw #首左右 (ごく僅かに動いてる気がする)
-        # self.commands[6] = head_roll #首かしげる 割り当てるキーがない！ (ほとんど動いてないしまあいいか)
-
-        threshold = 0.02
-        self.commands = [x if abs(x) > threshold else 0 for x in self.commands]
-        print(f"joystick commands: {self.commands}")
-
     def run(self):
         try:
             with mujoco.viewer.launch_passive(
-                    self.model,
-                    self.data,
-                    show_left_ui=True,
-                    show_right_ui=False,
-                    key_callback=self.key_callback,
-                ) as viewer:
+                self.model,
+                self.data,
+                show_left_ui=False,
+                show_right_ui=False,
+                key_callback=self.key_callback,
+            ) as viewer:
                 counter = 0
                 while True:
 
                     step_start = time.time()
-
-                    #if joystick is available and user is using it, handle joystick input
-                    if self.use_joystick:
-                        self.handle_joystick()
 
                     mujoco.mj_step(self.model, self.data)
 
@@ -323,13 +245,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-o", "--onnx_model_path", type=str, default="checkpoints/2026_06_15_152253_151388160.onnx")
-    parser.add_argument(
-        "-j",
-        "--joystick",
-        action="store_true",
-        default=True,
-        help="Use pygame joystick control",
-    )
+    # parser.add_argument("-k", action="store_true", default=False)
     parser.add_argument(
         "--reference_data",
         type=str,
@@ -345,10 +261,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     mjinfer = MjInfer(
-        args.model_path,
-        args.reference_data,
-        args.onnx_model_path,
-        args.standing,
-        use_joystick=args.joystick,
+        args.model_path, args.reference_data, args.onnx_model_path, args.standing
     )
     mjinfer.run()
