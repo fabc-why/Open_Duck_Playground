@@ -1,3 +1,4 @@
+import cv2
 import mujoco
 import pickle
 import numpy as np
@@ -8,9 +9,9 @@ import argparse
 from playground.common.onnx_infer import OnnxInfer
 from playground.common.poly_reference_motion_numpy import PolyReferenceMotion
 from playground.common.utils import LowPassActionFilter
-import cv2
 
 from playground.open_duck_mini_v2.mujoco_infer_base import MJInferBase
+from playground.open_duck_mini_v2.ros2_connection import Ros2Connection
 
 USE_MOTOR_SPEED_LIMITS = True
 
@@ -66,9 +67,9 @@ class MjInfer(MJInferBase):
 
         self.phase_frequency_factor = 1.0
         
-        self.ros2_connected = False
+        self.ros2 = Ros2Connection(fps=30)  # Initialize ROS2 connection with 30 FPS
 
-        self.renderer = mujoco.Renderer(self.model)
+        self.renderer = mujoco.Renderer(self.model, width=640, height=480)
 
         print(f"joint names: {self.joint_names}")
         print(f"actuator names: {self.actuator_names}")
@@ -139,15 +140,23 @@ class MjInfer(MJInferBase):
 
                     # 頭のカメラの映像
                     self.renderer.update_scene(self.data, camera="robot_head_cam")
-                    img = self.renderer.render(width=640, height=480, depth=False)
+                    img = self.renderer.render()
+                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                                    
+                    self.ros2.publish_image(img)
 
-                    cv2.imshow("robot_head_cam", img)
-                    cv2.waitKey(1)
+                    #cv2.imshow("robot_side", img)
+                    #cv2.waitKey(1)
+                    self.commands = self.ros2.subscribe_commands() #ROS2のコマンドを取得
+                    print(f"commands received: {self.commands}", end="\r", flush=True)
 
+                    #テスト用、勝手に動くようにしてる
+                    """
                     if counter % 1000 == 0:
                         self.commands[2] = np.random.uniform(
                             self.COMMANDS_RANGE_THETA[0], self.COMMANDS_RANGE_THETA[1]
                         )
+                    """
 
 
                     counter += 1
@@ -220,6 +229,9 @@ class MjInfer(MJInferBase):
                         time.sleep(time_until_next_step)
         except KeyboardInterrupt:
             pickle.dump(self.saved_obs, open("mujoco_saved_obs.pkl", "wb"))
+        
+        finally:
+            self.ros2.cleanup()
 
 
 if __name__ == "__main__":
