@@ -185,7 +185,7 @@ class OperationSide:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--host', default='172.17.156.126')
+    parser.add_argument('--host', default='localhost')
     parser.add_argument('--port', type=int, default=9090)
     args = parser.parse_args()
 
