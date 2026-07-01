@@ -148,7 +148,7 @@ class MjInfer(MJInferBase):
                     #cv2.imshow("robot_side", img)
                     #cv2.waitKey(1)
                     self.commands = self.ros2.subscribe_commands() #ROS2のコマンドを取得
-                    print(f"commands received: {self.commands}", end="\r", flush=True)
+                    # print(f"commands received: {self.commands}", end="\r", flush=True)
 
                     #テスト用、勝手に動くようにしてる
                     """
