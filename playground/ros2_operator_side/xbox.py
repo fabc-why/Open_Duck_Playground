@@ -57,28 +57,51 @@ class OperationSide:
 
         axis_0_raw = self.joystick.get_axis(0)
         axis_1_raw = self.joystick.get_axis(1)
+        axis_2_raw = self.joystick.get_axis(2)
         axis_3_raw = self.joystick.get_axis(3)
+        axis_4_raw = self.joystick.get_axis(4)
+        axis_5_raw = self.joystick.get_axis(5)
 
-        axis_0 = self.deadzone(axis_0_raw)
-        axis_1 = self.deadzone(axis_1_raw)
-        axis_3 = self.deadzone(axis_3_raw)
+        button_x = self.joystick.get_button(2)  # Xボタン
+        
+        dpad = self.joystick.get_hat(0)  # D-pad
+
+        button_lb = self.joystick.get_button(4)  # LBボタン
+        button_rb = self.joystick.get_button(5)  # RBボタン
+
+
+        lstick_x = self.deadzone(axis_0_raw) #左のスティック左右
+        lstick_y = self.deadzone(axis_1_raw) #左のスティック上下
+        ltrigger = self.deadzone(axis_2_raw) #左のトリガー
+        rstick_x = self.deadzone(axis_3_raw) #右のスティック左右
+        rstick_y = self.deadzone(axis_4_raw) #右のスティック上下
+        rtrigger = self.deadzone(axis_5_raw) #右のトリガー
 
         max_forward = 0.2
-        max_side = 0.2
+        max_side = 0.5
         max_yaw = 1.0
 
-        forward = -axis_1 * max_forward
-        side = -axis_0 * max_side
-        yaw = -axis_3 * max_yaw
+        x_boost = 1.5 if button_x else 1.0  # Xボタンが押されている場合はスケールを1.0にする
+        rb = -1 if button_rb else 1  # RBボタンが押されている場合はマイナス
+        lb = -1 if button_lb else 1  # LBボタンが押されている場合はマイナス
+
+        forward = -lstick_y * max_forward * x_boost #前進は左スティック上下
+        side = -dpad[0] * max_side #左右は十字キー左右
+        yaw = -lstick_x * max_yaw #旋回は左スティック左右
+
+        neck1 = rstick_y * 5.0 #首上下は右スティック上下
+        neck2 = rstick_x * 3.0 #首左右は右スティック左右
+        neck3 = lb * (ltrigger + 1) / 2 * 10.0 #首前後は左トリガー
+        neck4 = rb * (rtrigger + 1) / 2 * 5.0 #首前後は右トリガー
 
         self.command = [
             forward,
             side,
             yaw,
-            0.0,
-            0.0,
-            0.0,
-            0.0
+            neck1,
+            neck2,
+            neck3,
+            neck4
         ]
 
         msg = roslibpy.Message({
@@ -88,14 +111,10 @@ class OperationSide:
         self.pub.publish(msg)
 
         print(
-            f'raw: '
-            f'a0={axis_0_raw:.3f}, '
-            f'a1={axis_1_raw:.3f}, '
-            f'a3={axis_3_raw:.3f} | '
-            f'cmd: '
-            f'forward={forward:.3f}, '
-            f'side={side:.3f}, '
-            f'yaw={yaw:.3f}'
+            f'Published command: {self.command} | '
+            f'axes: {[rtrigger, ltrigger]} | '
+            f'dpad: {dpad} | '
+            f'button_x: {button_x}'
         )
 
     def listener_callback(self, message):
