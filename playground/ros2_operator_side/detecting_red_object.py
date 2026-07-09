@@ -8,9 +8,6 @@ import base64
 import argparse
 import time
 
-"""
-please make sure 
-"""
 
 class OperationSide:
     def __init__(self, host='localhost', port=9090, start_auto=True):

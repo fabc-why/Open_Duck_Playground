@@ -57,7 +57,7 @@ class OperationSide:
 
         axis_0_raw = self.joystick.get_axis(0)
         axis_1_raw = self.joystick.get_axis(1)
-        axis_3_raw = self.joystick.get_axis(2)
+        axis_3_raw = self.joystick.get_axis(3)
 
         axis_0 = self.deadzone(axis_0_raw)
         axis_1 = self.deadzone(axis_1_raw)
