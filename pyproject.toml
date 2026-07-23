@@ -14,6 +14,7 @@ dependencies = [
     "onnxruntime>=1.20.1",
     "playground>=0.0.3",
     "pygame>=2.6.1",
+    "roslibpy>=2.1.0",
     "tensorflow>=2.18.0",
     "tf2onnx>=1.16.1",
 ]
