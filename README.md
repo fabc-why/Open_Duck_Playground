@@ -30,7 +30,7 @@ Compared to the original repository, this fork includes:
 
 ### 前提
 
-- Ubuntu 22.04 を基本想定しています。26.04 でも動作する想定ですが、厳密な保証はしません。
+- Ubuntu 22.04 が基本ですが、26.04 でも動作することを確認していますので、Ubuntu系なら27以降もいけるでしょう（多分）。
 - それなりの GPU 性能が必要です。詳細な要件は fork 元の Open Duck Playground を参照してください。
 - `uv` というツールを入れる。
 - VS Code は必須ではありませんが、あると作業しやすいです。
