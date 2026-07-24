@@ -11,6 +11,7 @@ dependencies = [
     "jaxtyping>=0.2.38",
     "matplotlib>=3.10.0",
     "mediapy>=1.2.2",
+    "mujoco==3.9.0",
     "onnxruntime>=1.20.1",
     "opencv-contrib-python>=5.0.0.93",
     "playground>=0.0.3",
