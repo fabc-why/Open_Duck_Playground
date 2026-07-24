@@ -32,7 +32,7 @@ Compared to the original repository, this fork includes:
 
 - Ubuntu 22.04 を基本想定しています。26.04 でも動作する想定ですが、厳密な保証はしません。
 - それなりの GPU 性能が必要です。詳細な要件は fork 元の Open Duck Playground を参照してください。
-- `uv` は入れておくと便利です。
+- `uv` というツールを入れる。
 - VS Code は必須ではありませんが、あると作業しやすいです。
 
 ### 通常版の起動
@@ -81,7 +81,7 @@ uv run python playground/open_duck_mini_v2/modified/mujoco_infer_ros2.py
 
 ### ざっくり流れ
 
-1. 必要なら `uv` を入れる
+1.  `uv` を入れる (コマンド一つですぐできます)
 2. `git clone` する
 3. `uv sync` する
 4. `playground/open_duck_mini_v2/mujoco_infer.py` を動かす
