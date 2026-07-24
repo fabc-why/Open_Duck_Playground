@@ -322,7 +322,7 @@ class MjInfer(MJInferBase):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--onnx_model_path", type=str, default="checkpoints/2026_06_15_152253_151388160.onnx")
+    parser.add_argument("-o", "--onnx_model_path", type=str, default="playground/open_duck_mini_v2/data/policy.onnx")
     parser.add_argument(
         "-j",
         "--joystick",
