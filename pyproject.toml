@@ -12,6 +12,7 @@ dependencies = [
     "matplotlib>=3.10.0",
     "mediapy>=1.2.2",
     "onnxruntime>=1.20.1",
+    "opencv-contrib-python>=5.0.0.93",
     "playground>=0.0.3",
     "pygame>=2.6.1",
     "roslibpy>=2.1.0",
