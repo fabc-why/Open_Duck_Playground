@@ -40,7 +40,7 @@ Compared to the original repository, this fork includes:
 1. リポジトリを clone します。
 
   ```bash
-  git https://github.com/fabc-why/Open_Duck_Playground.git
+  git clone https://github.com/fabc-why/Open_Duck_Playground.git
   cd Open_Duck_Playground
   ```
 
