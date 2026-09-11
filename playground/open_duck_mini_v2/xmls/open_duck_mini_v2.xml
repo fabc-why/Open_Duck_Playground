@@ -63,20 +63,20 @@
         <inertial pos="-0.0483259 -9.97823e-05 0.0384971" mass="0.698526"
           fullinertia="0.00167701 0.00344479 0.00292635 -1.31662e-05 -3.24953e-05 -2.15581e-06"/>
         <!-- Part body_front -->
-        <geom type="mesh" class="visual" pos="-0.019 0 0.0648909" quat="1 0 0 0" mesh="body_front"
+        <geom type="mesh" class="visual" contype="1" conaffinity="1" pos="-0.019 0 0.0648909" quat="1 0 0 0" mesh="body_front"
           material="body_front_material"/>
         <!-- Part usb_c_charger -->
         <!-- Part body_back -->
-        <geom type="mesh" class="visual" pos="-0.019 3.46945e-18 0.0648909" quat="1 0 0 0" mesh="body_back"
+        <geom type="mesh" class="visual" contype="1" conaffinity="1" pos="-0.019 3.46945e-18 0.0648909" quat="1 0 0 0" mesh="body_back"
           material="body_back_material"/>
         <!-- Part body_middle_bottom -->
-        <geom type="mesh" class="visual" pos="-0.019 -3.46945e-18 0.0648909" quat="1 0 0 0" mesh="body_middle_bottom"
+        <geom type="mesh" class="visual" contype="1" conaffinity="1" pos="-0.019 -3.46945e-18 0.0648909" quat="1 0 0 0" mesh="body_middle_bottom"
           material="body_middle_bottom_material"/>
         <!-- Part power_switch -->
         <!-- Part bms -->
         <!-- Part battery_pack_lid -->
         <!-- Part body_middle_top -->
-        <geom type="mesh" class="visual" pos="-0.019 0 0.0648909" quat="1 0 0 0" mesh="body_middle_top"
+        <geom type="mesh" class="visual" contype="1" conaffinity="1" pos="-0.019 0 0.0648909" quat="1 0 0 0" mesh="body_middle_top"
           material="body_middle_top_material"/>
         <!-- Part bno055 -->
         <!-- Part roll_bearing -->
@@ -286,7 +286,7 @@
                   quat="0.707107 2.48509e-16 0.707107 5.27356e-16" mesh="head_bot_sheet"
                   material="head_bot_sheet_material"/>
                 <!-- Part head_2 -->
-                <geom type="mesh" class="visual" pos="-0.12906 1.92717e-17 0.06095"
+                <geom type="mesh" class="visual" contype="1" conaffinity="1" pos="-0.12906 1.92717e-17 0.06095"
                   quat="0.707107 2.80428e-16 0.707107 5.82867e-16" mesh="head" material="head_material"/>
                 <!-- Part bulb -->
                 <!-- Part glass -->
