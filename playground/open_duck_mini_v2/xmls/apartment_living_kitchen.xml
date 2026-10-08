@@ -1,0 +1,195 @@
+
+<mujoco model="apartment_living_kitchen">
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.002" integrator="implicitfast" gravity="0 0 -9.81" cone="elliptic"/>
+  <size memory="100M"/>
+
+  <visual>
+    <headlight ambient="0.35 0.35 0.35" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+  </visual>
+
+  <asset>
+    <texture name="tex_floor" type="2d" builtin="checker" rgb1="0.42 0.28 0.17" rgb2="0.50 0.35 0.22" width="300" height="300" mark="none"/>
+    <material name="mat_floor_wood" texture="tex_floor" texrepeat="10 10" texuniform="true" specular="0.2" shininess="0.3" reflectance="0.05"/>
+    <material name="mat_wall_paint" rgba="0.93 0.91 0.85 1" specular="0.1" shininess="0.05"/>
+    <material name="mat_ceiling" rgba="0.97 0.97 0.95 1" specular="0.05" shininess="0.02"/>
+    <material name="mat_cabinet_wood" rgba="0.45 0.28 0.15 1" specular="0.2" shininess="0.15"/>
+    <material name="mat_countertop" rgba="0.22 0.22 0.24 1" specular="0.5" shininess="0.35" reflectance="0.1"/>
+    <material name="mat_steel" rgba="0.75 0.76 0.78 1" specular="0.8" shininess="0.6" reflectance="0.3"/>
+    <material name="mat_dark_appliance" rgba="0.12 0.12 0.13 1" specular="0.5" shininess="0.4"/>
+    <material name="mat_fridge" rgba="0.88 0.89 0.90 1" specular="0.6" shininess="0.5" reflectance="0.2"/>
+    <material name="mat_sofa_fabric" rgba="0.33 0.38 0.47 1" specular="0.05" shininess="0.02"/>
+    <material name="mat_wood_furniture" rgba="0.55 0.38 0.22 1" specular="0.15" shininess="0.1"/>
+    <material name="mat_wood_desk" rgba="0.60 0.42 0.25 1" specular="0.15" shininess="0.1"/>
+    <material name="mat_glass" rgba="0.75 0.88 0.92 0.35" specular="0.9" shininess="0.9"/>
+    <material name="mat_frame_wood" rgba="0.30 0.18 0.10 1" specular="0.1" shininess="0.05"/>
+    <material name="mat_chrome" rgba="0.85 0.85 0.88 1" specular="0.9" shininess="0.8" reflectance="0.4"/>
+  </asset>
+
+  <default>
+    <geom type="box"/>
+    <default class="collision">
+      <geom group="3" contype="1" conaffinity="1" condim="3" friction="0.9 0.01 0.0001" rgba="1 0 0 0"/>
+    </default>
+    <default class="visual">
+      <geom group="1" contype="0" conaffinity="0" density="0"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <light name="sun" directional="true" pos="0 0 5" dir="0.2 0.2 -1" diffuse="0.35 0.35 0.33" specular="0.1 0.1 0.1"/>
+    <light name="ceiling_light_kitchen" pos="-0.6 1.6 2.4" dir="0 0 -1" diffuse="0.5 0.5 0.47" specular="0.1 0.1 0.1"/>
+    <light name="ceiling_light_living" pos="-1.5 -0.2 2.4" dir="0 0 -1" diffuse="0.5 0.5 0.47" specular="0.1 0.1 0.1"/>
+    <light name="ceiling_light_study" pos="1.2 -1.5 2.4" dir="0 0 -1" diffuse="0.5 0.5 0.47" specular="0.1 0.1 0.1"/>
+
+    <!-- FLOOR -->
+    <body name="floor" pos="0 0 0">
+      <geom name="floor_collision" class="collision" size="2.5 2.5 0.025" pos="0 0 -0.025" friction="1.0 0.005 0.0001" condim="3"/>
+      <geom name="floor_visual" class="visual" size="2.5 2.5 0.025" pos="0 0 -0.025" material="mat_floor_wood"/>
+    </body>
+
+    <!-- CEILING -->
+    <body name="ceiling" pos="0 0 0">
+      <geom name="ceiling_collision" class="collision" size="2.5 2.5 0.025" pos="0 0 2.525"/>
+      <geom name="ceiling_visual" class="visual" size="2.5 2.5 0.025" pos="0 0 2.525" material="mat_ceiling"/>
+    </body>
+
+    <!-- NORTH WALL (solid, behind kitchen) -->
+    <body name="wall_north" pos="0 2.5 1.25">
+      <geom name="wall_north_collision" class="collision" size="2.5 0.05 1.25" pos="0 0 0"/>
+      <geom name="wall_north_visual" class="visual" size="2.5 0.05 1.25" pos="0 0 0" material="mat_wall_paint"/>
+    </body>
+
+    <!-- WEST WALL (solid, behind sofa) -->
+    <body name="wall_west" pos="-2.5 0 1.25">
+      <geom name="wall_west_collision" class="collision" size="0.05 2.5 1.25" pos="0 0 0"/>
+      <geom name="wall_west_visual" class="visual" size="0.05 2.5 1.25" pos="0 0 0" material="mat_wall_paint"/>
+    </body>
+
+    <!-- SOUTH WALL with study-area window -->
+    <body name="wall_south" pos="0 -2.5 0">
+      <geom name="wall_south_pier_left_collision" class="collision" size="0.35 0.05 1.25" pos="-2.15 0 1.25"/>
+      <geom name="wall_south_pier_left_visual" class="visual" size="0.35 0.05 1.25" pos="-2.15 0 1.25" material="mat_wall_paint"/>
+      <geom name="wall_south_pier_right_collision" class="collision" size="1.55 0.05 1.25" pos="0.95 0 1.25"/>
+      <geom name="wall_south_pier_right_visual" class="visual" size="1.55 0.05 1.25" pos="0.95 0 1.25" material="mat_wall_paint"/>
+      <geom name="wall_south_sill_collision" class="collision" size="0.6 0.05 0.45" pos="-1.2 0 0.45"/>
+      <geom name="wall_south_sill_visual" class="visual" size="0.6 0.05 0.45" pos="-1.2 0 0.45" material="mat_wall_paint"/>
+      <geom name="wall_south_lintel_collision" class="collision" size="0.6 0.05 0.2" pos="-1.2 0 2.3"/>
+      <geom name="wall_south_lintel_visual" class="visual" size="0.6 0.05 0.2" pos="-1.2 0 2.3" material="mat_wall_paint"/>
+      <geom name="window_south_frame_visual" class="visual" size="0.62 0.04 0.62" pos="-1.2 0 1.5" material="mat_frame_wood"/>
+      <geom name="window_south_glass_collision" class="collision" size="0.56 0.015 0.56" pos="-1.2 0.02 1.5"/>
+      <geom name="window_south_glass_visual" class="visual" size="0.56 0.015 0.56" pos="-1.2 0.02 1.5" material="mat_glass"/>
+    </body>
+
+    <!-- EAST WALL with living-room window -->
+    <body name="wall_east" pos="2.5 0 0">
+      <geom name="wall_east_pier_bottom_collision" class="collision" size="0.05 1.35 1.25" pos="0 -1.15 1.25"/>
+      <geom name="wall_east_pier_bottom_visual" class="visual" size="0.05 1.35 1.25" pos="0 -1.15 1.25" material="mat_wall_paint"/>
+      <geom name="wall_east_pier_top_collision" class="collision" size="0.05 0.55 1.25" pos="0 1.95 1.25"/>
+      <geom name="wall_east_pier_top_visual" class="visual" size="0.05 0.55 1.25" pos="0 1.95 1.25" material="mat_wall_paint"/>
+      <geom name="wall_east_sill_collision" class="collision" size="0.05 0.6 0.45" pos="0 0.8 0.45"/>
+      <geom name="wall_east_sill_visual" class="visual" size="0.05 0.6 0.45" pos="0 0.8 0.45" material="mat_wall_paint"/>
+      <geom name="wall_east_lintel_collision" class="collision" size="0.05 0.6 0.2" pos="0 0.8 2.3"/>
+      <geom name="wall_east_lintel_visual" class="visual" size="0.05 0.6 0.2" pos="0 0.8 2.3" material="mat_wall_paint"/>
+      <geom name="window_east_frame_visual" class="visual" size="0.04 0.62 0.62" pos="0 0.8 1.5" material="mat_frame_wood"/>
+      <geom name="window_east_glass_collision" class="collision" size="0.015 0.56 0.56" pos="-0.02 0.8 1.5"/>
+      <geom name="window_east_glass_visual" class="visual" size="0.015 0.56 0.56" pos="-0.02 0.8 1.5" material="mat_glass"/>
+    </body>
+
+    <!-- KITCHEN (along north wall) -->
+    <body name="fridge" pos="-2.0 2.125 0.9">
+      <geom name="fridge_collision" class="collision" size="0.35 0.325 0.9"/>
+      <geom name="fridge_visual" class="visual" size="0.35 0.325 0.9" material="mat_fridge"/>
+    </body>
+
+    <body name="lower_cabinets" pos="-0.15 2.15 0.435">
+      <geom name="lower_cabinets_collision" class="collision" size="1.4 0.3 0.435"/>
+      <geom name="lower_cabinets_visual" class="visual" size="1.4 0.3 0.435" material="mat_cabinet_wood"/>
+    </body>
+
+    <body name="countertop" pos="-0.15 2.125 0.885">
+      <geom name="countertop_collision" class="collision" size="1.45 0.325 0.015"/>
+      <geom name="countertop_visual" class="visual" size="1.45 0.325 0.015" material="mat_countertop"/>
+    </body>
+
+    <body name="kitchen_sink" pos="-1.0 2.1 0.905">
+      <geom name="sink_basin_visual" class="visual" size="0.25 0.18 0.02" material="mat_steel"/>
+    </body>
+
+    <body name="kitchen_faucet" pos="-1.0 2.35 0.9">
+      <geom name="faucet_base_visual" class="visual" type="capsule" size="0.015" fromto="0 0 0 0 0 0.18" material="mat_chrome"/>
+      <geom name="faucet_spout_visual" class="visual" type="capsule" size="0.012" fromto="0 0 0.18 0 -0.15 0.18" material="mat_chrome"/>
+    </body>
+
+    <body name="stove" pos="0.5 2.15 0.435">
+      <geom name="stove_collision" class="collision" size="0.3 0.3 0.435"/>
+      <geom name="stove_body_visual" class="visual" size="0.3 0.3 0.435" material="mat_dark_appliance"/>
+      <geom name="stove_cooktop_visual" class="visual" size="0.3 0.3 0.01" pos="0 0 0.445" material="mat_steel"/>
+    </body>
+
+    <body name="range_hood" pos="0.5 2.3 2.0">
+      <geom name="range_hood_collision" class="collision" size="0.3 0.2 0.15"/>
+      <geom name="range_hood_visual" class="visual" size="0.3 0.2 0.15" material="mat_steel"/>
+    </body>
+
+    <body name="upper_cabinets_west" pos="-0.925 2.275 1.8">
+      <geom name="upper_cabinets_west_collision" class="collision" size="0.625 0.175 0.35"/>
+      <geom name="upper_cabinets_west_visual" class="visual" size="0.625 0.175 0.35" material="mat_cabinet_wood"/>
+    </body>
+
+    <body name="upper_cabinets_east" pos="0.625 2.275 1.8">
+      <geom name="upper_cabinets_east_collision" class="collision" size="0.625 0.175 0.35"/>
+      <geom name="upper_cabinets_east_visual" class="visual" size="0.625 0.175 0.35" material="mat_cabinet_wood"/>
+    </body>
+
+    <!-- LIVING ROOM (along west wall) -->
+    <body name="sofa" pos="-2.0 0 0">
+      <geom name="sofa_collision" class="collision" size="0.45 1.05 0.45" pos="0 0 0.45"/>
+      <geom name="sofa_seat_visual" class="visual" size="0.4 0.95 0.215" pos="-0.05 0 0.215" material="mat_sofa_fabric"/>
+      <geom name="sofa_backrest_visual" class="visual" size="0.08 0.95 0.45" pos="-0.37 0 0.45" material="mat_sofa_fabric"/>
+      <geom name="sofa_armrest_south_visual" class="visual" size="0.4 0.08 0.35" pos="-0.05 -0.97 0.35" material="mat_sofa_fabric"/>
+      <geom name="sofa_armrest_north_visual" class="visual" size="0.4 0.08 0.35" pos="-0.05 0.97 0.35" material="mat_sofa_fabric"/>
+    </body>
+
+    <body name="coffee_table" pos="-1.1 0 0">
+      <geom name="coffee_table_collision" class="collision" size="0.5 0.3 0.2" pos="0 0 0.2"/>
+      <geom name="coffee_table_top_visual" class="visual" size="0.5 0.3 0.02" pos="0 0 0.4" material="mat_wood_furniture"/>
+      <geom name="coffee_table_leg1_visual" class="visual" type="cylinder" size="0.02 0.2" pos="-0.44 -0.24 0.2" material="mat_wood_furniture"/>
+      <geom name="coffee_table_leg2_visual" class="visual" type="cylinder" size="0.02 0.2" pos="-0.44 0.24 0.2" material="mat_wood_furniture"/>
+      <geom name="coffee_table_leg3_visual" class="visual" type="cylinder" size="0.02 0.2" pos="0.44 -0.24 0.2" material="mat_wood_furniture"/>
+      <geom name="coffee_table_leg4_visual" class="visual" type="cylinder" size="0.02 0.2" pos="0.44 0.24 0.2" material="mat_wood_furniture"/>
+    </body>
+
+    <body name="tv_stand" pos="2.225 -1.5 0">
+      <geom name="tv_stand_collision" class="collision" size="0.225 0.6 0.25" pos="0 0 0.25"/>
+      <geom name="tv_stand_visual" class="visual" size="0.225 0.6 0.25" pos="0 0 0.25" material="mat_wood_furniture"/>
+      <geom name="tv_screen_visual" class="visual" size="0.03 0.5 0.3" pos="0.2 0 1.1" material="mat_dark_appliance"/>
+    </body>
+
+    <!-- STUDY AREA (near south window) -->
+    <body name="desk" pos="-1.5 -2.15 0">
+      <geom name="desk_collision" class="collision" size="0.5 0.3 0.365" pos="0 0 0.365"/>
+      <geom name="desk_top_visual" class="visual" size="0.5 0.3 0.02" pos="0 0 0.73" material="mat_wood_desk"/>
+      <geom name="desk_leg1_visual" class="visual" type="cylinder" size="0.02 0.355" pos="-0.48 -0.28 0.355" material="mat_wood_desk"/>
+      <geom name="desk_leg2_visual" class="visual" type="cylinder" size="0.02 0.355" pos="-0.48 0.28 0.355" material="mat_wood_desk"/>
+      <geom name="desk_leg3_visual" class="visual" type="cylinder" size="0.02 0.355" pos="0.48 -0.28 0.355" material="mat_wood_desk"/>
+      <geom name="desk_leg4_visual" class="visual" type="cylinder" size="0.02 0.355" pos="0.48 0.28 0.355" material="mat_wood_desk"/>
+      <geom name="desk_drawers_visual" class="visual" size="0.18 0.28 0.15" pos="0.2 0.05 0.43" material="mat_wood_desk"/>
+    </body>
+
+    <body name="desk_chair" pos="-1.5 -1.6 0">
+      <geom name="desk_chair_collision" class="collision" size="0.22 0.22 0.405" pos="0 0 0.405"/>
+      <geom name="desk_chair_seat_visual" class="visual" size="0.2 0.2 0.02" pos="0 0 0.45" material="mat_sofa_fabric"/>
+      <geom name="desk_chair_back_visual" class="visual" size="0.02 0.2 0.18" pos="-0.18 0 0.63" material="mat_sofa_fabric"/>
+      <geom name="desk_chair_leg1_visual" class="visual" type="cylinder" size="0.015 0.225" pos="-0.17 -0.17 0.225" material="mat_chrome"/>
+      <geom name="desk_chair_leg2_visual" class="visual" type="cylinder" size="0.015 0.225" pos="-0.17 0.17 0.225" material="mat_chrome"/>
+      <geom name="desk_chair_leg3_visual" class="visual" type="cylinder" size="0.015 0.225" pos="0.17 -0.17 0.225" material="mat_chrome"/>
+      <geom name="desk_chair_leg4_visual" class="visual" type="cylinder" size="0.015 0.225" pos="0.17 0.17 0.225" material="mat_chrome"/>
+    </body>
+  </worldbody>
+
+  <keyframe>
+    <key name="home"/>
+  </keyframe>
+</mujoco>

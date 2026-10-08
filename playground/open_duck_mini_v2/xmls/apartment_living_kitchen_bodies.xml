@@ -1,0 +1,88 @@
+<mujocoinclude>
+  <body name="apartment_room" pos="0 0 0">
+  <body name="floor">
+    <geom name="floor" type="plane" size="0 0 0.01" pos="0 0 0" contype="1" conaffinity="1" friction="1 0.005 0.0001" condim="3" rgba="1 1 1 0"/>
+    <geom name="apartment_floor_visual" type="box" size="0.875 0.875 0.00875" pos="0 0 -0.00875" material="apartment_floor" contype="0" conaffinity="0"/>
+  </body>
+  <body name="apartment_wall_north" pos="0 0.875 0.4375">
+    <geom name="apartment_wall_north" type="box" size="0.875 0.0175 0.4375" contype="1" conaffinity="1" material="apartment_wall"/>
+  </body>
+  <body name="apartment_wall_west" pos="-0.875 0 0.4375">
+    <geom name="apartment_wall_west" type="box" size="0.0175 0.875 0.4375" contype="1" conaffinity="1" material="apartment_wall"/>
+  </body>
+  <body name="apartment_wall_south" pos="0 -0.875 0">
+    <geom name="south_left" type="box" size="0.1225 0.0175 0.4375" pos="-0.7525 0 0.4375" material="apartment_wall"/>
+    <geom name="south_right" type="box" size="0.5425 0.0175 0.4375" pos="0.3325 0 0.4375" material="apartment_wall"/>
+    <geom name="south_sill" type="box" size="0.21 0.0175 0.1575" pos="-0.42 0 0.1575" material="apartment_wall"/>
+    <geom name="south_lintel" type="box" size="0.21 0.0175 0.07" pos="-0.42 0 0.805" material="apartment_wall"/>
+    <geom name="south_window_frame" type="box" size="0.217 0.014 0.217" pos="-0.42 0 0.525" material="apartment_frame" contype="0" conaffinity="0"/>
+    <geom name="south_window_glass" type="box" size="0.196 0.00525 0.196" pos="-0.42 0.007 0.525" material="apartment_glass" contype="0" conaffinity="0"/>
+  </body>
+  <body name="apartment_wall_east" pos="0.875 0 0">
+    <geom name="east_bottom" type="box" size="0.0175 0.4725 0.4375" pos="0 -0.4025 0.4375" material="apartment_wall"/>
+    <geom name="east_top" type="box" size="0.0175 0.1925 0.4375" pos="0 0.6825 0.4375" material="apartment_wall"/>
+    <geom name="east_sill" type="box" size="0.0175 0.21 0.1575" pos="0 0.28 0.1575" material="apartment_wall"/>
+    <geom name="east_lintel" type="box" size="0.0175 0.21 0.07" pos="0 0.28 0.805" material="apartment_wall"/>
+    <geom name="east_window_frame" type="box" size="0.014 0.217 0.217" pos="0 0.28 0.525" material="apartment_frame" contype="0" conaffinity="0"/>
+    <geom name="east_window_glass" type="box" size="0.00525 0.196 0.196" pos="-0.007 0.28 0.525" material="apartment_glass" contype="0" conaffinity="0"/>
+  </body>
+
+  <body name="apartment_fridge" pos="-0.7 0.74375 0.315">
+    <geom name="fridge_collision" type="box" size="0.1225 0.11375 0.315" contype="1" conaffinity="1" rgba="1 1 1 0"/>
+    <geom name="fridge_visual" type="box" size="0.1225 0.11375 0.315" material="apartment_fridge" contype="0" conaffinity="0"/>
+    <geom name="fridge_handle" type="capsule" fromto="0.0875 -0.119 0.07 0.0875 -0.119 0.525" size="0.00875" material="apartment_chrome" contype="0" conaffinity="0"/>
+  </body>
+  <body name="apartment_kitchen">
+    <geom name="lower_cabinets" type="box" size="0.49 0.105 0.15225" pos="-0.0525 0.7525 0.15225" material="apartment_cabinet" contype="0" conaffinity="0"/>
+    <geom name="lower_cabinets_collision" type="box" size="0.49 0.105 0.15225" pos="-0.0525 0.7525 0.15225" contype="1" conaffinity="1" rgba="1 1 1 0"/>
+    <geom name="lower_door_left" type="box" size="0.238 0.006 0.135" pos="-0.2975 0.6465 0.15225" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="lower_door_right" type="box" size="0.238 0.006 0.135" pos="0.1925 0.6465 0.15225" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="lower_door_handle_left" type="capsule" fromto="-0.08 0.638 0.15225 -0.08 0.638 0.18" size="0.004" material="apartment_chrome" contype="0" conaffinity="0"/>
+    <geom name="lower_door_handle_right" type="capsule" fromto="0.08 0.638 0.15225 0.08 0.638 0.18" size="0.004" material="apartment_chrome" contype="0" conaffinity="0"/>
+    <geom name="countertop" type="box" size="0.5075 0.11375 0.00525" pos="-0.0525 0.74375 0.30975" material="apartment_counter"/>
+    <geom name="sink" type="box" size="0.0875 0.063 0.007" pos="-0.35 0.735 0.31675" material="apartment_steel" contype="0" conaffinity="0"/>
+    <geom name="faucet" type="capsule" fromto="-0.35 0.8225 0.315 -0.35 0.8225 0.378" size="0.00525" material="apartment_chrome" contype="0" conaffinity="0"/>
+    <geom name="faucet_spout" type="capsule" fromto="-0.35 0.8225 0.378 -0.35 0.77 0.378" size="0.0042" material="apartment_chrome" contype="0" conaffinity="0"/>
+    <geom name="stove" type="box" size="0.105 0.105 0.15225" pos="0.175 0.7525 0.15225" material="apartment_appliance"/>
+    <geom name="stove_top" type="box" size="0.105 0.105 0.0035" pos="0.175 0.7525 0.308" material="apartment_steel" contype="0" conaffinity="0"/>
+    <geom name="range_hood" type="box" size="0.0525 0.07 0.0525" pos="-0.0525 0.795 0.7" material="apartment_steel" contype="0" conaffinity="0"/>
+    <geom name="upper_cabinets_west" type="box" size="0.21875 0.06125 0.1225" pos="-0.32375 0.78625 0.63" material="apartment_cabinet" contype="0" conaffinity="0"/>
+    <geom name="upper_cabinets_east" type="box" size="0.21875 0.06125 0.1225" pos="0.21875 0.78625 0.63" material="apartment_cabinet" contype="0" conaffinity="0"/>
+  </body>
+
+  <body name="apartment_sofa" pos="-0.7 0 0">
+    <geom name="sofa_collision" type="box" size="0.1575 0.3675 0.1575" pos="0 0 0.1575" rgba="1 1 1 0"/>
+    <geom name="sofa_seat" type="box" size="0.14 0.3325 0.07525" pos="-0.0175 0 0.07525" material="apartment_sofa" contype="0" conaffinity="0"/>
+    <geom name="sofa_back" type="box" size="0.028 0.3325 0.1575" pos="-0.1295 0 0.1575" material="apartment_sofa" contype="0" conaffinity="0"/>
+    <geom name="sofa_arm_south" type="box" size="0.14 0.028 0.1225" pos="-0.0175 -0.3395 0.1225" material="apartment_sofa" contype="0" conaffinity="0"/>
+    <geom name="sofa_arm_north" type="box" size="0.14 0.028 0.1225" pos="-0.0175 0.3395 0.1225" material="apartment_sofa" contype="0" conaffinity="0"/>
+  </body>
+  <body name="apartment_coffee_table" pos="-0.385 0 0">
+    <geom name="coffee_collision" type="box" size="0.175 0.105 0.07" pos="0 0 0.07" rgba="1 1 1 0"/>
+    <geom name="coffee_top" type="box" size="0.175 0.105 0.007" pos="0 0 0.14" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="coffee_leg_1" type="cylinder" size="0.007 0.07" pos="-0.154 -0.084 0.07" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="coffee_leg_2" type="cylinder" size="0.007 0.07" pos="-0.154 0.084 0.07" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="coffee_leg_3" type="cylinder" size="0.007 0.07" pos="0.154 -0.084 0.07" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="coffee_leg_4" type="cylinder" size="0.007 0.07" pos="0.154 0.084 0.07" material="apartment_wood" contype="0" conaffinity="0"/>
+  </body>
+  <body name="apartment_tv_stand" pos="0.77875 -0.525 0">
+    <geom name="tv_stand_collision" type="box" size="0.07875 0.21 0.0875" pos="0 0 0.0875" rgba="1 1 1 0"/>
+    <geom name="tv_stand_visual" type="box" size="0.07875 0.21 0.0875" pos="0 0 0.0875" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="tv_screen" type="box" size="0.0105 0.175 0.105" pos="0.07 0 0.385" material="apartment_appliance" contype="0" conaffinity="0"/>
+  </body>
+  <body name="apartment_desk" pos="-0.525 -0.7525 0">
+    <geom name="desk_collision" type="box" size="0.175 0.105 0.12775" pos="0 0 0.12775" rgba="1 1 1 0"/>
+    <geom name="desk_top" type="box" size="0.175 0.105 0.007" pos="0 0 0.2555" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="desk_leg_1" type="cylinder" size="0.007 0.12425" pos="-0.168 -0.098 0.12425" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="desk_leg_2" type="cylinder" size="0.007 0.12425" pos="-0.168 0.098 0.12425" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="desk_leg_3" type="cylinder" size="0.007 0.12425" pos="0.168 -0.098 0.12425" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="desk_leg_4" type="cylinder" size="0.007 0.12425" pos="0.168 0.098 0.12425" material="apartment_wood" contype="0" conaffinity="0"/>
+    <geom name="desk_drawers" type="box" size="0.063 0.098 0.0525" pos="0.07 0.0175 0.1505" material="apartment_wood" contype="0" conaffinity="0"/>
+  </body>
+  <body name="apartment_desk_chair" pos="-0.525 -0.56 0">
+    <geom name="chair_collision" type="box" size="0.077 0.077 0.14175" pos="0 0 0.14175" rgba="1 1 1 0"/>
+    <geom name="chair_seat" type="box" size="0.07 0.07 0.007" pos="0 0 0.1575" material="apartment_sofa" contype="0" conaffinity="0"/>
+    <geom name="chair_back" type="box" size="0.007 0.07 0.063" pos="-0.063 0 0.2205" material="apartment_sofa" contype="0" conaffinity="0"/>
+  </body>
+  </body>
+</mujocoinclude>
